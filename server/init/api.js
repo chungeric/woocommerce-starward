@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { appSettings, gravityForms, wp } from '../../graphQL';
+import { appSettings, gravityForms, wp, woocommerce } from '../../graphQL';
 import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX } from '../config/app';
 import { createRedisClient } from '../redis';
 import { submitForm } from './gravitySubmit';
@@ -298,6 +298,42 @@ export default(app) => {
           totalPages
         }
       }`, {term: req.query.term, type: req.query.type, page: req.query.page, perPage: req.query.perPage})
+      .then(handleSuccess(res))
+      .catch(handleError(res));
+  });
+  /* ----------- WooCommerce Endpoints ----------- */
+  /* Get Product Category and Collection of Products */
+  app.get('/api/products/category', (req, res) => {
+    woocommerce(`
+      query get_product_category($slug: String) {
+        category: productcategory(slug: $slug) {
+          details {
+            slug,
+            name,
+            description,
+            id,
+            parent
+          },
+          products {
+            items {
+              slug,
+              name,
+              description,
+              id,
+              regular_price,
+              sale_price,
+              price_html,
+              images {
+                src,
+                alt,
+                position
+              }
+            },
+            totalProducts,
+            totalPages
+          }
+        }
+      }`, { slug: req.query.slug })
       .then(handleSuccess(res))
       .catch(handleError(res));
   });

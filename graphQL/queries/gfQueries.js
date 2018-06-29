@@ -31,7 +31,7 @@ const gfQueries = {
   Query: {
     form(id, args) {
       const formApiURL = `${gravityFormApi}/${args.id}`;
-      return axios.get(formApiURL, {headers: auth})
+      return axios.get(formApiURL, { headers: auth })
       .then(res => {
         return res.data;
       })

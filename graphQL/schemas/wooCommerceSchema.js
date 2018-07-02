@@ -2,7 +2,8 @@ const wooCommerceSchema = `
   type Category {
     # Products list
     details: Taxonomy,
-    products: Products
+    products: Products,
+    attributeIds: [Int]
   }
   type Taxonomy {
     # Individual Taxonomy

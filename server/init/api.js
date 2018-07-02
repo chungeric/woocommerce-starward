@@ -332,7 +332,8 @@ export default(app) => {
             },
             totalProducts,
             totalPages
-          }
+          },
+          attributeIds
         }
       }`, { slug: req.query.slug, page: req.query.page })
       .then(handleSuccess(res))

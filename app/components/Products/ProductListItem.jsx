@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { ProductImage } from './ProductImage.jsx';
+// import { baseUrl, STORE_PRODUCTS_SLUG } from '../../config/app';
 
 export const ProductListItem = props => {
   const {
@@ -18,9 +19,10 @@ export const ProductListItem = props => {
       { images.length > 0 &&
         <ProductImage baseImage={images[0]} />
       }
-      <Link to="#">
+      <Link to={`/products/${slug}`}>
         <h3>{name}</h3>
       </Link>
+      <div dangerouslySetInnerHTML={{ __html: price_html }} />
     </div>
   );
 };

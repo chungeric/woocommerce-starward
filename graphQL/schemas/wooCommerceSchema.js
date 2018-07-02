@@ -54,7 +54,7 @@ const wooCommerceSchema = `
     options: [String]
   }
   type Query {
-    productcategory (slug: String): Category
+    productcategory (slug: String, page: Int): Category
   }
 `;
 

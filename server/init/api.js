@@ -304,9 +304,10 @@ export default(app) => {
   /* ----------- WooCommerce Endpoints ----------- */
   /* Get Product Category and Collection of Products */
   app.get('/api/products/category', (req, res) => {
+    console.log(req.query.page);
     woocommerce(`
-      query get_product_category($slug: String) {
-        category: productcategory(slug: $slug) {
+      query get_product_category($slug: String, $page: Int) {
+        category: productcategory(slug: $slug, page: $page) {
           details {
             slug,
             name,
@@ -333,7 +334,7 @@ export default(app) => {
             totalPages
           }
         }
-      }`, { slug: req.query.slug })
+      }`, { slug: req.query.slug, page: req.query.page })
       .then(handleSuccess(res))
       .catch(handleError(res));
   });

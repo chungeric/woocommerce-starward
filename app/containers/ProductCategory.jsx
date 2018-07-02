@@ -13,16 +13,13 @@ class ProductCategory extends Component {
     if (loading) return <Loading />;
     if (!category) return <FourOhFour />;
     const { details, products } = category;
-    const { items, totalProducts, totalPages } = products;
     return (
       <main className="content" role="main">
         <Head defaultTitle={`${details.name} - ${settings.name}`} />
         <Title title={details.name} />
         <ProductList
-          products={items}
-          totalProducts={totalProducts}
-          totalPages={totalPages}
-          // urlBase={`${STORE_SLUG}/${params.slug}`}
+          products={products}
+          urlBase={`${STORE_SLUG}/${params.category}`}
           currentPage={params.page}
          />
       </main>

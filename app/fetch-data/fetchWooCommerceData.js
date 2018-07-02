@@ -9,7 +9,8 @@ const fetchWooCommerceData = (params, routeName) => {
   switch (routeName) {
     // Product Category Data
     case 'ProductCategory': {
-      return getCategory(params.category)
+      const pageNumber = params.page ? params.page : 1;
+      return getCategory(params.category, pageNumber)
       .then(res => {
         return res.data.data;
       });

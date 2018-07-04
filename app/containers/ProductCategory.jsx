@@ -14,13 +14,14 @@ class ProductCategory extends Component {
     const { category, loading, settings, params } = this.props;
     if (loading) return <Loading />;
     if (!category) return <FourOhFour />;
-    const { details, products, attributes } = category;
+    const { details, products, filters } = category;
+    // console.log(attributes);
     return (
       <main className="content" role="main">
         <Head defaultTitle={`${details.name} - ${settings.name}`} />
         <Title title={details.name} />
         <LayeredNavigation
-          attributes={attributes}
+          filters={filters}
           />
         <ProductList
           products={products}

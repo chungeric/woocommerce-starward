@@ -1,6 +1,7 @@
+import axios from 'axios';
 import moment from 'moment';
 import { appSettings, gravityForms, wp, woocommerce } from '../../graphQL';
-import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX } from '../config/app';
+import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX, WP_AUTH, WP_API } from '../config/app';
 import { createRedisClient } from '../redis';
 import { submitForm } from './gravitySubmit';
 
@@ -304,7 +305,6 @@ export default(app) => {
   /* ----------- WooCommerce Endpoints ----------- */
   /* Get Product Category and Collection of Products */
   app.get('/api/products/category', (req, res) => {
-    console.log(req.query.page);
     woocommerce(`
       query get_product_category($slug: String, $page: Int) {
         category: productcategory(slug: $slug, page: $page) {
@@ -333,12 +333,116 @@ export default(app) => {
             totalProducts,
             totalPages
           },
-          attributeIds
+          filters
         }
       }`, { slug: req.query.slug, page: req.query.page })
       .then(handleSuccess(res))
       .catch(handleError(res));
   });
+
+  /* Get WooCommerce Attributes Specific to a Product Category */
+  app.get('/api/categoryfilters', async (req, res) => {
+    const WC_API_ROOT = `${WP_API}/wc/v2`;
+    const wcProductsUrl = `${WC_API_ROOT}/products`;
+    const auth = { Authorization: `Basic ${WP_AUTH}` };
+    const toArray = (obj) => Object.keys(obj).map(key => obj[key]);
+    try {
+      const { categoryId } = req.query;
+
+      // Get all product data for current category
+      const productsResponse = await axios.get(`${wcProductsUrl}?category=${categoryId}`, { headers: auth });
+      // Get an array of attributes from each product
+      const attributesArray = productsResponse.data.map((product) => {
+        return product.attributes;
+      });
+      // Get array of product prices
+      const pricesArray = productsResponse.data.map((product) => {
+        return product.price;
+      });
+      const maxPrice = Math.max(...pricesArray);
+      const minPrice = Math.min(...pricesArray);
+
+      // Merge product attribute arrays into 1 array
+      const attributesArrayMerged = [].concat.apply([], attributesArray);
+
+      // Initialise filter objects
+      const priceObj = {
+        min_price: minPrice,
+        max_price: maxPrice
+      };
+      const attributesObj = {};
+
+      console.log('setting up filters object');
+
+      // Add only unique attributes to attributesObject
+      attributesArrayMerged.forEach((attribute) => {
+        if (!(attribute in attributesObj)) {
+          attributesObj[attribute.name] = {
+            id: attribute.id,
+            name: attribute.name,
+            slug: null,
+            options: []
+          };
+        }
+      });
+
+      // Push available options into attributesObj
+      attributesArrayMerged.forEach(attribute => {
+        // Push unique options into attributes object
+        attribute.options.forEach((option) => {
+          if (attributesObj[attribute.name].options.indexOf(option) === -1) {
+            attributesObj[attribute.name].options.push(option);
+          }
+        });
+      });
+
+      // Get each unique attribute's slug and available option details
+      await Promise.all(toArray(attributesObj).map(async (attribute) => {
+        // Make requests to get attribute slugs
+        const attributeData = await axios.get(`${wcProductsUrl}/attributes/${attribute.id}`, { headers: auth });
+        attributesObj[attribute.name].slug = attributeData.data.slug;
+        // Make request to get attibute options with ids
+        const optionData = await axios.get(`${wcProductsUrl}/attributes/${attribute.id}/terms`, { headers: auth });
+        const optionDetails = optionData.data;
+        // Get existing array containing option names only
+        const optionNames = attributesObj[attribute.name].options;
+        // Map over option names and find obj withing optionData response
+        const options = optionNames.map(optionName => {
+          const option = optionDetails.find(item => item.name === optionName);
+          const { id, name, slug } = option;
+          return ({
+            id,
+            name,
+            slug
+          });
+        });
+        // Replace basic option info with detailed response from API
+        attributesObj[attribute.name].options = options;
+      }));
+
+      /* Set up filtersObject response */
+      const filtersObject = {
+        price: null,
+        attributes: {}
+      };
+
+      /* Populate filtersObject response */
+      // Store max and min price under Price
+      filtersObject.price = priceObj;
+      // Store attribute details under corresponding attribute name
+      filtersObject.attributes = attributesObj;
+      // toArray(attributesObj).forEach(attribute => {
+      //   filtersObject.attributes[attribute.name] = attribute;
+      // });
+
+      // Respond with category filters object
+      return res.json(sanitizeJSON(filtersObject));
+    } catch (error) {
+      // Handle error
+      return res.json(error);
+    }
+  });
+
   /* ----------- Gravity Forms Endpoints ----------- */
   /* Get Gravity Form */
   /* Expects query param ?id= */
@@ -370,6 +474,7 @@ export default(app) => {
   app.post('/api/gravityforms', (req, res) => {
     return submitForm(req, res);
   });
+
   /* ----------- Redis Endpoints ----------- */
   /* Flush Redis */
   app.get('/api/flushredis', (req, res) => {

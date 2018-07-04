@@ -3,7 +3,7 @@ const wooCommerceSchema = `
     # Products list
     details: Taxonomy,
     products: Products,
-    attributeIds: [Int]
+    filters: JSON
   }
   type Taxonomy {
     # Individual Taxonomy
@@ -50,6 +50,7 @@ const wooCommerceSchema = `
     # Product Attribute
     id: Int,
     name: String,
+    slug: String,
     position: Int,
     visible: Boolean,
     options: [String]

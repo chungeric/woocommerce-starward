@@ -355,25 +355,35 @@ export default(app) => {
       const attributesArray = productsResponse.data.map((product) => {
         return product.attributes;
       });
+      // Get an array of subcategories
+      const subCategoriesArray = await axios.get(`${wcProductsUrl}/categories?parent=${categoryId}`, { headers: auth });
       // Get array of product prices
       const pricesArray = productsResponse.data.map((product) => {
         return product.price;
       });
+      // Get max and min price for the category to use in price range slider
       const maxPrice = Math.max(...pricesArray);
       const minPrice = Math.min(...pricesArray);
 
       // Merge product attribute arrays into 1 array
       const attributesArrayMerged = [].concat.apply([], attributesArray);
 
-      // Initialise filter objects
+      console.log('setting up category filters object');
+
       const priceObj = {
         min_price: minPrice,
         max_price: maxPrice
       };
+
+      const subCategoriesObj = subCategoriesArray.data.map((subcategory) => {
+        return ({
+          id: subcategory.id,
+          name: subcategory.name,
+          slug: subcategory.slug
+        });
+      });
+
       const attributesObj = {};
-
-      console.log('setting up filters object');
-
       // Add only unique attributes to attributesObject
       attributesArrayMerged.forEach((attribute) => {
         if (!(attribute in attributesObj)) {
@@ -421,19 +431,12 @@ export default(app) => {
       }));
 
       /* Set up filtersObject response */
-      const filtersObject = {
-        price: null,
-        attributes: {}
-      };
+      const filtersObject = {};
 
       /* Populate filtersObject response */
-      // Store max and min price under Price
       filtersObject.price = priceObj;
-      // Store attribute details under corresponding attribute name
       filtersObject.attributes = attributesObj;
-      // toArray(attributesObj).forEach(attribute => {
-      //   filtersObject.attributes[attribute.name] = attribute;
-      // });
+      filtersObject.subcategories = subCategoriesObj;
 
       // Respond with category filters object
       return res.json(sanitizeJSON(filtersObject));

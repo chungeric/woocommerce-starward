@@ -434,9 +434,19 @@ export default(app) => {
       const filtersObject = {};
 
       /* Populate filtersObject response */
-      filtersObject.price = priceObj;
-      filtersObject.attributes = attributesObj;
-      filtersObject.subcategories = subCategoriesObj;
+      const isEmpty = (container) => {
+        return Object.getOwnPropertyNames(container).length === 0 || container.length === 0;
+      };
+
+      if (!isEmpty(priceObj)) {
+        filtersObject.price = priceObj;
+      }
+      if (!isEmpty(attributesObj)) {
+        filtersObject.attributes = attributesObj;
+      }
+      if (!isEmpty(subCategoriesObj)) {
+        filtersObject.subcategories = subCategoriesObj;
+      }
 
       // Respond with category filters object
       return res.json(sanitizeJSON(filtersObject));

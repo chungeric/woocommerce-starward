@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-function PriceSlider({ filter, index}) {
-  return (
-    <section className="filter-block" key={index}>
-      <h3>{filter.name}</h3>
-      <label htmlFor="price">Price</label>
-      <input type="range" id="price-slider" name="price" min={filter.min_price} max={filter.max_price} />
-    </section>
-  );
+function PriceSlider({filter, index}) {
+  if (filter && filter.min_price !== filter.max_price) {
+    return (
+      <section className="filter-block" key={index}>
+        <h3>Price</h3>
+        <label htmlFor="price">Price</label>
+        <input type="range" id="price-slider" name="price" min={filter.min_price} max={filter.max_price} />
+      </section>
+    );
+  }
+  return null;
 }
 
 function AttributeFilter({attribute}) {
@@ -29,6 +32,26 @@ function AttributeFilter({attribute}) {
   );
 }
 
+function SubCategoriesFilter({subcategories}) {
+  if (subcategories.length > 0) {
+    return (
+      <section className="filter-block">
+        <h3>Sub Categories</h3>
+        <ul>
+          { subcategories.map((subcategory, i) => {
+            return (
+              <li key={i}>
+                <Link to={`/store/${subcategory.slug}`}>{subcategory.name}</Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    );
+  }
+  return null;
+}
+
 function renderAttributeFilters(filters, filterType) {
   // For attributes we loop over all attributes and render each one in its
   // own separate filter block
@@ -46,6 +69,9 @@ function renderFilterBlocks(filters) {
     }
     if (filterType === 'attributes') {
       return renderAttributeFilters(filters, filterType);
+    }
+    if (filterType === 'subcategories') {
+      return <SubCategoriesFilter subcategories={filters[filterType]} key={index} />;
     }
     return null;
   });

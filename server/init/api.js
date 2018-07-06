@@ -328,6 +328,11 @@ export default(app) => {
                 src,
                 alt,
                 position
+              },
+              attributes {
+                id,
+                name,
+                slug
               }
             },
             totalProducts,

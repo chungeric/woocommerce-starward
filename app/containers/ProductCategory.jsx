@@ -11,17 +11,24 @@ import { LayeredNavigation } from '../components/Products/LayeredNavigation';
 
 class ProductCategory extends Component {
   render() {
-    const { category, loading, settings, params } = this.props;
+    const {
+      category,
+      loading,
+      settings,
+      params,
+      location
+    } = this.props;
     if (loading) return <Loading />;
     if (!category) return <FourOhFour />;
     const { details, products, filters } = category;
-    // console.log(attributes);
     return (
       <main className="content" role="main">
         <Head defaultTitle={`${details.name} - ${settings.name}`} />
         <Title title={details.name} />
         <LayeredNavigation
+          location={location}
           filters={filters}
+          urlBase={`${STORE_SLUG}/${params.category}`}
           />
         <ProductList
           products={products}

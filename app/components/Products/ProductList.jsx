@@ -12,6 +12,7 @@ export const ProductList = props => {
     starwardUpdating
   } = props;
   const { items, totalProducts } = products;
+  // console.log(products);
   if (!products || products.length < 1) {
     return <h3>No Posts Found</h3>;
   }

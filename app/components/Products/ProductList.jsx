@@ -12,12 +12,9 @@ export const ProductList = props => {
     starwardUpdating
   } = props;
   const { items, totalProducts } = products;
-  // console.log(products);
   if (!products || products.length < 1) {
-    return <h3>No Posts Found</h3>;
+    return <h3>No Products Found</h3>;
   }
-  // const samePagePagination = true;
-
   // If no page parameter, then the page is the first page
   const activePage = !currentPage ? 1 : currentPage;
   // Get index of first product on page
@@ -27,7 +24,6 @@ export const ProductList = props => {
   return (
     <section className="products">
       { items.length > 0 &&
-        // Change this to use offset and get range e.g. 8-16 of 96
         <div>Showing {firstProductIndex}-{lastProductIndex} of {totalProducts} results</div>
       }
       <section className="products-list">
@@ -35,7 +31,6 @@ export const ProductList = props => {
         {items.map((product, index) => <ProductListItem key={index} {...product} />)}
       </section>
       <Pagination
-        // samePage={samePagePagination}
         urlBase={urlBase}
         products={products}
         currentPage={currentPage}

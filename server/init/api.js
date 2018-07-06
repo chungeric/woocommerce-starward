@@ -306,8 +306,8 @@ export default(app) => {
   /* Get Product Category and Collection of Products */
   app.get('/api/products/category', (req, res) => {
     woocommerce(`
-      query get_product_category($slug: String, $page: Int) {
-        category: productcategory(slug: $slug, page: $page) {
+      query get_product_category($slug: String, $page: Int, $queryString: String) {
+        category: productcategory(slug: $slug, page: $page, queryString: $queryString) {
           details {
             slug,
             name,
@@ -340,7 +340,11 @@ export default(app) => {
           },
           filters
         }
-      }`, { slug: req.query.slug, page: req.query.page })
+      }`, {
+        slug: req.query.slug,
+        page: req.query.page,
+        queryString: req.query.queryString
+      })
       .then(handleSuccess(res))
       .catch(handleError(res));
   });

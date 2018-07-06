@@ -17,7 +17,10 @@ const wooCommerceQueries = {
     products(response) {
       if (!response || !response.data || !response.data[0]) return [];
       const categoryId = response.data[0].id;
-      return axios.get(`${wcProductsUrl}?category=${categoryId}&page=${response.page}&per_page=${PRODUCTS_PER_PAGE}`, { headers: auth })
+      const queryString = (response.queryString !== null) ? response.queryString.replace(/\$/g, '&') : '';
+      // console.log('WooComm API request', queryString);
+      // console.log('url', `${wcProductsUrl}?category=${categoryId}&page=${response.page}&per_page=${PRODUCTS_PER_PAGE}${queryString}`);
+      return axios.get(`${wcProductsUrl}?category=${categoryId}&page=${response.page}&per_page=${PRODUCTS_PER_PAGE}${queryString}`, { headers: auth })
       .then(productsResponse => {
         return ({
           items: productsResponse.data,
@@ -33,10 +36,12 @@ const wooCommerceQueries = {
       // Get Current Category Id
       const categoryId = response.data[0].id;
 
+      // const queryString = response.queryString || '';
+
       // Get Product Attributes for Current Category
       return axios.get(`${ROOT_API}/categoryfilters?categoryId=${categoryId}`)
       .then(categoryFilters => {
-        console.log(categoryFilters.data);
+        // console.log(categoryFilters.data);
         return categoryFilters.data;
       })
       .catch(error => console.log('error', error));
@@ -49,7 +54,8 @@ const wooCommerceQueries = {
       .then(categoryRes => {
         return ({
           data: categoryRes.data,
-          page: args.page || 1
+          page: args.page || 1,
+          queryString: args.queryString || null
         });
       })
       .catch(error => console.log('error', error));

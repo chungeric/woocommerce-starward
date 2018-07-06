@@ -10,6 +10,21 @@ import { ProductList } from '../components/Products/ProductList';
 import { LayeredNavigation } from '../components/Products/LayeredNavigation';
 
 class ProductCategory extends Component {
+  constructor(props) {
+    super(props);
+    const { category } = this.props;
+    const { products } = category;
+    this.state = {
+      products
+    };
+  }
+  componentWillReceiveProps(newProps) {
+    const { category } = newProps;
+    const { products } = category;
+    this.setState({
+      products
+    });
+  }
   render() {
     const {
       category,
@@ -20,7 +35,7 @@ class ProductCategory extends Component {
     } = this.props;
     if (loading) return <Loading />;
     if (!category) return <FourOhFour />;
-    const { details, products, filters } = category;
+    const { details, filters } = category;
     return (
       <main className="content" role="main">
         <Head defaultTitle={`${details.name} - ${settings.name}`} />
@@ -31,7 +46,7 @@ class ProductCategory extends Component {
           urlBase={`${STORE_SLUG}/${params.category}`}
           />
         <ProductList
-          products={products}
+          products={this.state.products}
           urlBase={`${STORE_SLUG}/${params.category}`}
           currentPage={params.page}
           />

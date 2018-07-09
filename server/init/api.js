@@ -332,7 +332,8 @@ export default(app) => {
               attributes {
                 id,
                 name,
-                slug
+                slug,
+                options
               }
             },
             totalProducts,

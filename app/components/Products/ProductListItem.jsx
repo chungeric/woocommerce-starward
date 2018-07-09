@@ -12,7 +12,8 @@ export const ProductListItem = props => {
     regular_price,
     sale_price,
     price_html,
-    images
+    images,
+    attributes
   } = props;
   return (
     <div className="product">
@@ -23,6 +24,15 @@ export const ProductListItem = props => {
         <h3>{name}</h3>
       </Link>
       <div dangerouslySetInnerHTML={{ __html: price_html }} />
+      { attributes.map(attribute => {
+        return (
+          <div key={attribute.name}>
+            { attribute.options.map((option, i) => {
+              return <span key={i}>{option} </span>;
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 };

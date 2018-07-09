@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PriceSlider from './PriceSlider';
 
 const queryObjectToString = (queryObj) => {
   if (!queryObj) return null;
@@ -46,20 +47,8 @@ const getQueryString = (queryObj, newKey, newValue) => {
   return queryObjectToString(queryStringsObj);
 };
 
-function PriceSlider({filter, index}) {
-  if (filter && filter.min_price !== filter.max_price) {
-    return (
-      <section className="filter-block" key={index}>
-        <h3>Price</h3>
-        <label htmlFor="price">Price</label>
-        <input type="range" id="price-slider" name="price" min={filter.min_price} max={filter.max_price} />
-      </section>
-    );
-  }
-  return null;
-}
-
 function AttributeFilter({attribute, urlBase, location}) {
+  // console.log(location);
   return (
     <section className="filter-block">
       <h3>{attribute.name}</h3>
@@ -70,6 +59,9 @@ function AttributeFilter({attribute, urlBase, location}) {
             // for each attribute option
             const queryObj = location && Object.assign({}, location.query);
             const queryString = getQueryString(queryObj, attribute.slug, option.id);
+            // const isActive =
+            //   (queryObj.hasOwnProperty(attribute.slug));
+            // console.log(isActive);
             return (
               <li key={i}>
                 <Link to={`/${urlBase}${queryString}`}>{option.name}</Link>
@@ -152,7 +144,6 @@ const RenderFilterBlocks = ({filters, urlBase, location}) => {
 
 export const LayeredNavigation = props => {
   const { filters, urlBase, location } = props;
-  console.log(filters);
   const categoryHasFilters = Object.keys(filters).length > 0;
   return (
     <div className="layered-navigation">

@@ -7,7 +7,7 @@ import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
 
 import { ProductList } from '../components/Products/ProductList';
-import { LayeredNavigation } from '../components/Products/LayeredNavigation';
+import { LayeredNavigation } from '../components/Products/LayeredNavigation/LayeredNavigation';
 
 class ProductCategory extends Component {
   constructor(props) {

@@ -1,0 +1,26 @@
+.price-slider {
+  width: 100%;
+  max-width: 500px;
+  height: 20px;
+  position: relative;
+
+  .bar {
+    position: relative;
+    // top: 8px;
+    height: 100%;
+    background-color: #ddd;
+  }
+
+  .handle {
+    font-size: 0.9em;
+    text-align: center;
+    background-color: #777;
+    // border: 3px solid #333;
+    // border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    line-height: 48px;
+  }
+}

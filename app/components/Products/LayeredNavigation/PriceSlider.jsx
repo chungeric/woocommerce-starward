@@ -7,7 +7,6 @@ class PriceSlider extends Component {
     const { location } = this.props;
     const newMinPrice = value[0];
     const newMaxPrice = value[1];
-    console.log('location', location);
     browserHistory.push({
       ...location,
       query: {
@@ -24,9 +23,6 @@ class PriceSlider extends Component {
     const hasNewPrices = ('min_price' in location.query) || ('max_price' in location.query);
     const newMinPrice = hasNewPrices ? parseInt(location.query.min_price) : null;
     const newMaxPrice = hasNewPrices ? parseInt(location.query.max_price) : null;
-    console.log(location);
-    console.log(newMinPrice);
-    console.log(newMaxPrice);
     if (filter && minPrice !== maxPrice) {
       return (
         <section className="filter-block" key={index}>

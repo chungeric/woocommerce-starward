@@ -17,22 +17,22 @@ export const ProductListItem = props => {
   } = props;
   return (
     <div className="product">
-      { images.length > 0 &&
-        <ProductImage baseImage={images[0]} />
-      }
       <Link to={`/products/${slug}`}>
+        { images.length > 0 &&
+          <ProductImage baseImage={images[0]} />
+        }
         <h3>{name}</h3>
+        <div dangerouslySetInnerHTML={{ __html: price_html }} />
+        { attributes.map(attribute => {
+          return (
+            <div key={attribute.name}>
+              { attribute.options.map((option, i) => {
+                return <span key={i}>{option} </span>;
+              })}
+            </div>
+          );
+        })}
       </Link>
-      <div dangerouslySetInnerHTML={{ __html: price_html }} />
-      { attributes.map(attribute => {
-        return (
-          <div key={attribute.name}>
-            { attribute.options.map((option, i) => {
-              return <span key={i}>{option} </span>;
-            })}
-          </div>
-        );
-      })}
     </div>
   );
 };

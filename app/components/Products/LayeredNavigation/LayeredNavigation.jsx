@@ -4,10 +4,10 @@ import PriceSlider from './PriceSlider';
 
 const queryObjectToString = (queryObj) => {
   if (!queryObj) return null;
-  const queryString = Object.keys(queryObj).map(key => {
-    return `${key}=${queryObj[key]}`;
+  const queryString = Object.keys(queryObj).map((key, index) => {
+    return `${index === 0 ? '?' : ''}${key}=${queryObj[key]}`;
   }).join('&');
-  return `?${queryString}`;
+  return `${queryString}`;
 };
 
 const getQueryString = (queryObj, newKey, newValue) => {
@@ -73,16 +73,20 @@ function AttributeFilter({attribute, urlBase, location}) {
   );
 }
 
-function SubCategoriesFilter({subcategories}) {
+function SubCategoriesFilter({subcategories, urlBase, location}) {
   if (subcategories.length > 0) {
     return (
       <section className="filter-block">
         <h3>Sub Categories</h3>
         <ul>
           { subcategories.map((subcategory, i) => {
+            // Clone location query object so that we use the original location.query
+            // for each attribute option
+            const queryObj = location && Object.assign({}, location.query);
+            const queryString = getQueryString(queryObj, 'category', subcategory.id);
             return (
               <li key={i}>
-                <Link to={`/store/${subcategory.slug}`}>{subcategory.name}</Link>
+                <Link to={`/${urlBase}${queryString}`}>{subcategory.name}</Link>
               </li>
             );
           })}
@@ -114,6 +118,7 @@ const RenderFilterBlocks = ({filters, urlBase, location}) => {
   if (!filters && filters.length < 1) return null;
   return (
     <div>
+      <Link to={`/${urlBase}`}>Clear filters</Link>
       {Object.keys(filters).map(filterType => {
         if (filterType === 'price') {
           return (
@@ -132,6 +137,7 @@ const RenderFilterBlocks = ({filters, urlBase, location}) => {
             <SubCategoriesFilter
               subcategories={filters[filterType]}
               key={filterType}
+              urlBase={urlBase}
               location={location}
             />
           );

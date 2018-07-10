@@ -39,7 +39,6 @@ class PriceSlider extends Component {
             onAfterChange={this.handleChange}
             withBars
             />
-          <p>Testing</p>
         </section>
       );
     }

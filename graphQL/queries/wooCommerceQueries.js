@@ -43,6 +43,22 @@ const wooCommerceQueries = {
       .catch(error => console.log('error', error));
     }
   },
+  Product: {
+    relatedProducts(response) {
+      if (!response) return [];
+      // Map related ids into an array of promises
+      // Resolve all promises so that we end up with an array of related products
+      const relatedIds = response.related_ids;
+      console.log('relatedProducts', relatedIds);
+      // const relatedProducts = relatedIds.map(id => {
+      //
+      // });
+      // return relatedProducts;
+      return axios.get(`${wcProductsUrl}?slug=rug-4`, { headers: auth })
+      .then(res => res.data)
+      .catch(error => console.log('error', error));
+    }
+  },
   Query: {
     productcategory(query, args) {
       const wcCategoryURL = `${wcCategoriesUrl}?slug=${args.slug}`;

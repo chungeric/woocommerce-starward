@@ -39,6 +39,7 @@ const wooCommerceSchema = `
     type: String,
     featured: Boolean,
     catalog_visibility: String,
+    relatedProducts: [Product],
     parent: Int,
     count: Int
   }

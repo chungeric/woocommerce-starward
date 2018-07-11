@@ -496,7 +496,18 @@ export default(app) => {
           stock_quantity,
           type,
           featured,
-          catalog_visibility
+          catalog_visibility,
+          relatedProducts {
+            images {
+              src,
+              alt,
+              position
+            },
+            name,
+            regular_price,
+            sale_price,
+            slug
+          }
         }
       }`, { slug: req.query.slug })
       .then(handleSuccess(res))

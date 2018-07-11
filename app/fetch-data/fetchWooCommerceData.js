@@ -1,7 +1,8 @@
 import { wooCommerceService } from './services';
 
 const {
-  getCategory
+  getCategory,
+  getProduct
 } = wooCommerceService;
 
 const fetchWooCommerceData = (params, routeName, location) => {
@@ -14,7 +15,17 @@ const fetchWooCommerceData = (params, routeName, location) => {
       return getCategory(params.category, pageNumber, queryString)
       .then(res => {
         return res.data.data;
-      });
+      })
+      .catch(error => console.log('error', error));
+    }
+    case 'Product': {
+      const productSlug = params.product;
+      return getProduct(productSlug)
+      .then(res => {
+        // console.log(res.data.data);
+        return res.data.data;
+      })
+      .catch(error => console.log('error', error));
     }
     default:
       return ({handleNotFound: '404'});

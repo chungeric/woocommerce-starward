@@ -22,16 +22,23 @@ const wooCommerceSchema = `
   }
   type Product {
     # Product
+    sku: String
     id: Int
     name: String,
     slug: String,
     description: String,
+    short_description: String,
     images: [ProductImage],
     price: Float,
     regular_price: Float,
     sale_price: Float,
     price_html: String,
     attributes: [Attribute],
+    in_stock: Boolean,
+    stock_quantity: Int,
+    type: String,
+    featured: Boolean,
+    catalog_visibility: String,
     parent: Int,
     count: Int
   }
@@ -57,6 +64,7 @@ const wooCommerceSchema = `
   }
   type Query {
     productcategory (slug: String, page: Int, queryString: String): Category
+    product (slug: String): Product
   }
 `;
 

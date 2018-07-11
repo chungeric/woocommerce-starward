@@ -380,11 +380,6 @@ export default(app) => {
 
       console.log('setting up category filters object');
 
-      const priceObj = {
-        min_price: minPrice,
-        max_price: maxPrice
-      };
-
       const subCategoriesObj = subCategoriesArray.data.map((subcategory) => {
         return ({
           id: subcategory.id,
@@ -448,7 +443,11 @@ export default(app) => {
         return Object.getOwnPropertyNames(container).length === 0 || container.length === 0;
       };
 
-      if (!isEmpty(priceObj)) {
+      if (maxPrice !== minPrice) {
+        const priceObj = {
+          min_price: minPrice,
+          max_price: maxPrice
+        };
         filtersObject.price = priceObj;
       }
       if (!isEmpty(attributesObj)) {
@@ -464,6 +463,44 @@ export default(app) => {
       // Handle error
       return res.json(error);
     }
+  });
+
+  app.get('/api/product', (req, res) => {
+    woocommerce(`
+      query get_product($slug: String) {
+        product(slug: $slug) {
+          sku,
+          id,
+          name,
+          slug,
+          description,
+          short_description,
+          images {
+            src,
+            alt,
+            position
+          },
+          price,
+          regular_price,
+          sale_price,
+          price_html,
+          attributes {
+            id,
+            name,
+            slug,
+            position,
+            visible,
+            options
+          },
+          in_stock,
+          stock_quantity,
+          type,
+          featured,
+          catalog_visibility
+        }
+      }`, { slug: req.query.slug })
+      .then(handleSuccess(res))
+      .catch(handleError(res));
   });
 
   /* ----------- Gravity Forms Endpoints ----------- */

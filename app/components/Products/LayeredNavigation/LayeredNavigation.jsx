@@ -151,16 +151,17 @@ const RenderFilterBlocks = ({filters, urlBase, location}) => {
 export const LayeredNavigation = props => {
   const { filters, urlBase, location } = props;
   const categoryHasFilters = Object.keys(filters).length > 0;
-  return (
-    <div className="layered-navigation">
-      { categoryHasFilters &&
+  if (categoryHasFilters) {
+    return (
+      <div className="layered-navigation">
         <h2>Layered Navigation</h2>
-      }
-      <RenderFilterBlocks
-        filters={filters}
-        urlBase={urlBase}
-        location={location}
-      />
-    </div>
-  );
+        <RenderFilterBlocks
+          filters={filters}
+          urlBase={urlBase}
+          location={location}
+        />
+      </div>
+    );
+  }
+  return null;
 };

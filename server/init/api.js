@@ -465,6 +465,7 @@ export default(app) => {
     }
   });
 
+  /* Get a specific product */
   app.get('/api/product', (req, res) => {
     woocommerce(`
       query get_product($slug: String) {
@@ -503,6 +504,7 @@ export default(app) => {
               alt,
               position
             },
+            id,
             name,
             regular_price,
             sale_price,
@@ -512,6 +514,42 @@ export default(app) => {
       }`, { slug: req.query.slug })
       .then(handleSuccess(res))
       .catch(handleError(res));
+  });
+
+  /* Get related products */
+  app.get('/api/relatedproducts', async (req, res) => {
+    const WC_API_ROOT = `${WP_API}/wc/v2`;
+    const wcProductsUrl = `${WC_API_ROOT}/products`;
+    const auth = { Authorization: `Basic ${WP_AUTH}` };
+    const relatedIds = req.query.relatedIds ? req.query.relatedIds.split(',') : null;
+    try {
+      const relatedProductsArray = await Promise.all(relatedIds.map(async (id) => {
+        return await axios.get(`${wcProductsUrl}/${id}`, { headers: auth });
+      }))
+      .then(relatedProductsResponse => {
+        return relatedProductsResponse.map(relatedProduct => {
+          const {
+            images,
+            id,
+            name,
+            regular_price,
+            sale_price,
+            slug
+          } = relatedProduct.data;
+          return {
+            images,
+            id,
+            name,
+            regular_price,
+            sale_price,
+            slug
+          };
+        });
+      });
+      return res.json(sanitizeJSON(relatedProductsArray));
+    } catch (error) {
+      return res.json(error);
+    }
   });
 
   /* ----------- Gravity Forms Endpoints ----------- */

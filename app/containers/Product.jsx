@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { WP_URL } from '../../server/config/app';
+import { STORE_PRODUCTS_SLUG } from '../../app/config/app';
 
 import { Head } from '../components/Common/Head';
 import { Title } from '../components/Content/Title';
@@ -74,14 +76,39 @@ class Product extends Component {
             </div>
           );
         })}
-        {/* { relatedProducts.length > 0 &&
-          relatedProducts.map(relatedProduct => {
-          return <div>Related</div>;
-        })} */}
         <div className="description">
           <h2>Product Description</h2>
           <p dangerouslySetInnerHTML={{__html: description}} />
         </div>
+        { relatedProducts && <h2>Related Products</h2> }
+        { relatedProducts &&
+          relatedProducts.map(relatedProduct => {
+            const {
+              images,
+              id,
+              name,
+              regular_price: relatedProductRegularPrice,
+              sale_price: relatedProductSalePrice,
+              slug,
+            } = relatedProduct;
+            const relatedProductBaseImage = (images && images.length > 0) ? images[0] : null;
+            return (
+              <Link to={`/${STORE_PRODUCTS_SLUG}/${slug}`} className="related-product" key={id}>
+                { relatedProductBaseImage && <img src={`${WP_URL}${relatedProductBaseImage.src}`} alt={relatedProductBaseImage.alt} />}
+                <h3 key={id}>{name}</h3>
+                { relatedProductSalePrice ? (
+                  <div className="price">
+                    <p className="regular-price">Was {relatedProductRegularPrice}</p>
+                    <p className="sale-price">Now {relatedProductSalePrice}</p>
+                  </div>
+                ) : (
+                  <div className="price">
+                    <p className="regular-price">{relatedProductRegularPrice}</p>
+                  </div>
+                )}
+              </Link>
+            );
+          })}
       </main>
     );
   }

@@ -6,8 +6,7 @@ import { Header } from '../components/Common/Header';
 import { Footer } from '../components/Common/Footer';
 import { TrackingScript } from '../components/Common/TrackingScript';
 
-const WP_URL = 'http://localhost/starward_wp';
-const WP_API = `${WP_URL}/wp-json`;
+import { WP_API } from '../../server/config/app';
 
 class App extends Component {
   buyMeABeanie = async (event) => {

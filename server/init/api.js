@@ -507,4 +507,43 @@ export default(app) => {
       return res.json({success: true});
     });
   });
+
+    app.get('/api/buyabeanie', async (req, res) => {
+      try {
+        console.log(`Hitting: ${WP_API}/wc/v2/cart/add`);
+        const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
+          // Test Data
+          product_id: 52,
+          quantity: 1
+        });
+        const cookies = response.headers['set-cookie'];
+        const setCookieFunc = (cookie) => {
+          const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
+          const cookieKey = cookieKeyValue.split('=')[0];
+          const cookieValue = decodeURIComponent(cookieKeyValue.split('=')[1]);
+          const cookieOptions = { };
+          cookieOptionsArr.forEach(option => (cookieOptions[option.split('=')[0]] = option.split('=')[1]));
+          if (cookieOptions.expires) {
+            const expires = new Date(cookieOptions.expires);
+            cookieOptions.expires = expires;
+          }
+          cookieOptions.domain = 'birdbrain.io';
+          res.cookie(cookieKey, cookieValue, cookieOptions);
+        };
+        cookies.map(cookie => setCookieFunc(cookie));
+        return res.json(response.data);
+      } catch (error) {
+        // Handle error
+        return res.json(error);
+      }
+    });
+    app.get('/api/getcart', async (req, res) => {
+      try {
+        const response = await axios.get(`${WP_API}/wc/v2/cart`);
+        console.log('Response received!', response.data);
+        return res.json(response.data);
+      } catch (error) {
+        return res.json(error);
+      }
+    });
 };

@@ -12,6 +12,7 @@ import {
 
 
 const fetchCartFailure = error => async (dispatch) => {
+  console.error('Error @ fetchCart', error);
   dispatch({type: GET_CART_FAILURE, payload: error});
 };
 
@@ -21,8 +22,9 @@ const fetchCartSuccess = payload => async (dispatch) => {
 
 export const fetchCart = () => async (dispatch) => {
   dispatch({type: GET_CART});
+  console.log('Firing fetchCart action');
   try {
-    const payload = await axios.post(`${ROOT_API}/buyabeanie`);
+    const payload = await axios.get(`${ROOT_API}/getcart`);
     dispatch(fetchCartSuccess(payload));
   } catch (error) {
     dispatch(fetchCartFailure(error));
@@ -30,6 +32,7 @@ export const fetchCart = () => async (dispatch) => {
 };
 
 const addToCartFailure = error => async (dispatch) => {
+  console.error('Error @ addToCart', error);
   dispatch({type: ADD_TO_CART_FAILURE, payload: error});
 };
 
@@ -39,8 +42,9 @@ const addToSuccess = payload => async (dispatch) => {
 
 export const addToCart = () => async (dispatch) => {
   dispatch({type: ADD_TO_CART});
+  console.log('Firing addToCart action');
   try {
-    const payload = await axios.post(`${ROOT_API}/buyabeanie`);
+    const payload = await axios.get(`${ROOT_API}/addtocart`);
     dispatch(addToSuccess(payload));
   } catch (error) {
     dispatch(addToCartFailure(error));

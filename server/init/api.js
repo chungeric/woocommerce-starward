@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import { appSettings, gravityForms, wp, woocommerce } from '../../graphQL';
-import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX, WP_AUTH, WP_API } from '../config/app';
+import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX, WP_AUTH, WP_API, DOMAIN } from '../config/app';
 import { createRedisClient } from '../redis';
 import { submitForm } from './gravitySubmit';
 
@@ -507,6 +507,7 @@ export default(app) => {
       return res.json({success: true});
     });
   });
+
   app.get('/api/getcart', async (req, res) => {
     try {
       const response = await axios.get(`${WP_API}/wc/v2/cart`);
@@ -516,7 +517,7 @@ export default(app) => {
       return res.json(error);
     }
   });
-  app.get('/api/buyabeanie', async (req, res) => {
+  app.get('/api/addtocart', async (req, res) => {
     try {
       console.log(`Hitting: ${WP_API}/wc/v2/cart/add`);
       const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
@@ -535,7 +536,7 @@ export default(app) => {
           const expires = new Date(cookieOptions.expires);
           cookieOptions.expires = expires;
         }
-        cookieOptions.domain = 'birdbrain.io';
+        cookieOptions.domain = DOMAIN;
         res.cookie(cookieKey, cookieValue, cookieOptions);
       };
       cookies.map(cookie => setCookieFunc(cookie));

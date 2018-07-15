@@ -525,24 +525,24 @@ export default(app) => {
         product_id: 52,
         quantity: 1
       });
-      const cookies = response.headers['set-cookie'];
-      const setCookieFunc = (cookie) => {
-        const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
-        const cookieKey = cookieKeyValue.split('=')[0];
-        const cookieValue = decodeURIComponent(cookieKeyValue.split('=')[1]);
-        const cookieOptions = { };
-        cookieOptionsArr.forEach(option => (cookieOptions[option.split('=')[0]] = option.split('=')[1]));
-        if (cookieOptions.expires) {
-          const expires = new Date(cookieOptions.expires);
-          cookieOptions.expires = expires;
-        }
-        if (DOMAIN !== 'localhost') cookieOptions.domain = DOMAIN;
-        res.cookie(cookieKey, cookieValue, cookieOptions);
-        console.log({cookieKey});
-        console.log({cookieValue});
-        console.log({cookieOptions});
-      };
-      cookies.map(cookie => setCookieFunc(cookie));
+      // const cookies = response.headers['set-cookie'];
+      // const setCookieFunc = (cookie) => {
+      //   const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
+      //   const cookieKey = cookieKeyValue.split('=')[0];
+      //   const cookieValue = decodeURIComponent(cookieKeyValue.split('=')[1]);
+      //   const cookieOptions = { };
+      //   cookieOptionsArr.forEach(option => (cookieOptions[option.split('=')[0]] = option.split('=')[1]));
+      //   if (cookieOptions.expires) {
+      //     const expires = new Date(cookieOptions.expires);
+      //     cookieOptions.expires = expires;
+      //   }
+      //   if (DOMAIN !== 'localhost') cookieOptions.domain = DOMAIN;
+      //   res.cookie(cookieKey, cookieValue, cookieOptions);
+      //   console.log({cookieKey});
+      //   console.log({cookieValue});
+      //   console.log({cookieOptions});
+      // };
+      // cookies.map(cookie => setCookieFunc(cookie));
       return res.json(response.data);
     } catch (error) {
       // Handle error

@@ -15,3 +15,11 @@ export const UPDATE_FORM = 'UPDATE_FORM';
 export const SUBMIT_FORM = 'SUBMIT_FORM';
 export const SUBMIT_FORM_SUCCESS = 'SUBMIT_FORM_SUCCESS';
 export const SUBMIT_FORM_FAILURE = 'SUBMIT_FORM_FAILURE';
+
+// WooCommerce Cart
+export const GET_CART = 'GET_CART';
+export const GET_CART_SUCCESS = 'GET_CART_SUCCESS';
+export const GET_CART_FAILURE = 'GET_CART_FAILURE';
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const ADD_TO_CART_SUCCESS = 'ADD_TO_CART_SUCCESS';
+export const ADD_TO_CART_FAILURE = 'ADD_TO_CART_FAILURE';

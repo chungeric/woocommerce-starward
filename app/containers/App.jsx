@@ -24,7 +24,6 @@ class App extends Component {
   render() {
     const { children, starward, location } = this.props;
     const { settings, headerMenu } = starward;
-    console.log('yew', `${WP_API}/wc/v2/cart/add`);
     return (
       <div className={location.pathname === '/' ? 'home' : location.pathname.replace(/\//g, '')}>
         <Header
@@ -34,6 +33,8 @@ class App extends Component {
         />
         <Link to="#" onClick={this.buyMeABeanie}>Buy me a beanie!</Link>
         <Link to="#" onClick={this.viewMyCart}>View my cart!</Link>
+        <Link to="#" onClick={this.buyMeABeanie}>Buy a beanie (Endpoint)</Link>
+        <Link to="#" onClick={this.viewMyCart}>View my cart (Endpoint)</Link>
         {children}
         <Footer siteName={settings.name} />
         <TrackingScript

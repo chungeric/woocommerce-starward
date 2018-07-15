@@ -17,6 +17,7 @@ const fetchCartFailure = error => async (dispatch) => {
 };
 
 const fetchCartSuccess = payload => async (dispatch) => {
+  console.log('fetchCart success', payload);
   dispatch({type: GET_CART_SUCCESS, payload});
 };
 
@@ -37,6 +38,7 @@ const addToCartFailure = error => async (dispatch) => {
 };
 
 const addToSuccess = payload => async (dispatch) => {
+  console.log('addToCart success', payload);
   dispatch({type: ADD_TO_CART_SUCCESS, payload});
 };
 

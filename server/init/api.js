@@ -536,8 +536,11 @@ export default(app) => {
           const expires = new Date(cookieOptions.expires);
           cookieOptions.expires = expires;
         }
-        cookieOptions.domain = DOMAIN;
+        if (DOMAIN !== 'localhost') cookieOptions.domain = DOMAIN;
         res.cookie(cookieKey, cookieValue, cookieOptions);
+        console.log({cookieKey});
+        console.log({cookieValue});
+        console.log({cookieOptions});
       };
       cookies.map(cookie => setCookieFunc(cookie));
       return res.json(response.data);

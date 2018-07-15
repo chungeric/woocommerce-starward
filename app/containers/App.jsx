@@ -49,8 +49,8 @@ class App extends Component {
           currentPath={location.pathname}
         />
         <div className="test-buttons">
-          <Link className="test-button" to="#" onClick={(event) => this.fetchCartHandler(event)}>Buy me a beanie (Server)</Link>
-          <Link className="test-button" to="#" onClick={(event) => this.addToCartHandler(event)}>View my cart (Server)</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.addToCartHandler(event)}>Buy me a beanie (Server)</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.fetchCartHandler(event)}>View my cart (Server)</Link>
           <Link className="test-button" to="#" onClick={(event) => this.buyMeABeanie(event)}>Buy a beanie (Client)</Link>
           <Link className="test-button" to="#" onClick={(event) => this.viewMyCart(event)}>View my cart (Client)</Link>
         </div>

@@ -25,7 +25,7 @@ export const fetchCart = () => async (dispatch) => {
   dispatch({type: GET_CART});
   console.log('Firing fetchCart action');
   try {
-    const payload = await axios.get(`${ROOT_API}/getcart`);
+    const payload = await axios.get(`${ROOT_API}/getcart`, { withCredentials: true });
     dispatch(fetchCartSuccess(payload));
   } catch (error) {
     dispatch(fetchCartFailure(error));
@@ -46,7 +46,7 @@ export const addToCart = () => async (dispatch) => {
   dispatch({type: ADD_TO_CART});
   console.log('Firing addToCart action');
   try {
-    const payload = await axios.get(`${ROOT_API}/addtocart`);
+    const payload = await axios.get(`${ROOT_API}/addtocart`, { withCredentials: true });
     dispatch(addToSuccess(payload));
   } catch (error) {
     dispatch(addToCartFailure(error));

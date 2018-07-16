@@ -548,9 +548,6 @@ export default(app) => {
           cookieOptions.expires = expires;
         }
         res.cookie(cookieKey, cookieValue, cookieOptions);
-        console.log({cookieKey});
-        console.log({cookieValue});
-        console.log({cookieOptions});
       };
       cookies.map(cookie => setCookieFunc(cookie));
       return res.json(response.data);

@@ -26,6 +26,7 @@ export const fetchCart = (sessionCookie) => async (dispatch) => {
   console.log('Firing fetchCart action');
   const config = {};
   if (sessionCookie) config['session-data'] = sessionCookie;
+  console.log('Headers @ fetchCart', config);
   try {
     const payload = await axios.get(`${ROOT_API}/getcart`, { withCredentials: true }, {
       headers: config

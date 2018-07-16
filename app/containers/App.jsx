@@ -34,11 +34,20 @@ class App extends Component {
   }
   logCookies = async (event) => {
     event.preventDefault();
-    const { sessionKey } = this.state;
     const allCookies = Cookies.get();
     const cookieCartHash = Cookies.get('woocommerce_cart_hash');
     const cookieItemsInCart = Cookies.get('woocommerce_items_in_cart');
-    const cookieWooCommerceSession = Cookies.get(sessionKey);
+    const cookies = Cookies.get();
+    let sessionKey = false;
+    if (cookies) {
+      const cookieKeys = Object.keys(cookies);
+      for (const key of cookieKeys) {
+        if (key.includes('wp_woocommerce_session_')) {
+          sessionKey = key;
+        }
+      }
+    }
+    const cookieWooCommerceSession = sessionKey ? Cookies.get(sessionKey) : false;
     console.log({cookieCartHash});
     console.log({cookieItemsInCart});
     console.log({cookieWooCommerceSession});

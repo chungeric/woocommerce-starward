@@ -20,12 +20,12 @@ class App extends Component {
     const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
       product_id: 44,
       quantity: 1
-    });
+    }, { withCredentials: true });
     console.log('Added item to cart on the client', response);
   }
   viewMyCart = async (event) => {
     event.preventDefault();
-    const response = await axios.get(`${WP_API}/wc/v2/cart`);
+    const response = await axios.get(`${WP_API}/wc/v2/cart`, { withCredentials: true });
     console.log('Fetched cart on the client', response);
   }
   fetchCartHandler = (event) => {

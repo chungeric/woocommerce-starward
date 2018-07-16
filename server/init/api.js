@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import { appSettings, gravityForms, wp, woocommerce } from '../../graphQL';
-import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX, WP_AUTH, WP_API, DOMAIN } from '../config/app';
+import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX, WP_AUTH, WP_API, COOKIE_DOMAIN } from '../config/app';
 import { createRedisClient } from '../redis';
 import { submitForm } from './gravitySubmit';
 
@@ -524,7 +524,7 @@ export default(app) => {
         // Test Data
         product_id: 52,
         quantity: 1
-      });
+      }, { withCredentials: true });
       // const cookies = response.headers['set-cookie'];
       // const setCookieFunc = (cookie) => {
       //   const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
@@ -536,7 +536,7 @@ export default(app) => {
       //     const expires = new Date(cookieOptions.expires);
       //     cookieOptions.expires = expires;
       //   }
-      //   if (DOMAIN !== 'localhost') cookieOptions.domain = DOMAIN;
+      //   if (COOKIE_DOMAIN !== 'localhost') cookieOptions.domain = COOKIE_DOMAIN;
       //   res.cookie(cookieKey, cookieValue, cookieOptions);
       //   console.log({cookieKey});
       //   console.log({cookieValue});

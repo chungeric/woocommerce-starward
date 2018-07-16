@@ -523,6 +523,7 @@ export default(app) => {
   app.get('/api/addtocart', async (req, res) => {
     try {
       console.log(`Hitting: ${WP_API}/wc/v2/cart/add`);
+      console.log('`${WP_API}/wc/v2/cart/add`', `${WP_API}/wc/v2/cart/add`);
       const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
         // Test Data
         product_id: 52,

@@ -529,7 +529,9 @@ export default(app) => {
         quantity: 1
       }, { withCredentials: true });
       const cookies = response.headers['set-cookie'];
+      console.log(`Cookies from: ${WP_API}/wc/v2/cart/add`, cookies);
       const setCookieFunc = (cookie) => {
+        console.log('Running set cookie function');
         const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
         const cookieKey = cookieKeyValue.split('=')[0];
         const cookieValue = decodeURIComponent(cookieKeyValue.split('=')[1]);

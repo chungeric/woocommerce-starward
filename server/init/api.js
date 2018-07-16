@@ -40,6 +40,7 @@ const getHeaders = (sessionData) => {
     const keyArr = Object.keys(sessionData);
     for (const key of keyArr) {
       keyValuePairArr.push(`${key}=${sessionData[key]}`);
+      console.log(`Pushing cookie: ${key}=${sessionData[key]}`);
     }
     headers.Cookie = keyValuePairArr.join('; ');
   } else {

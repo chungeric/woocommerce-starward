@@ -530,6 +530,7 @@ export default(app) => {
     try {
       const sessionData = req.headers['session-data'];
       const headers = getHeaders(sessionData);
+      console.log('Headers @ /api/getcart', headers);
       const response = await axios.get(`${WP_API}/wc/v2/cart`, { headers });
       return res.json(response.data);
     } catch (error) {
@@ -540,6 +541,7 @@ export default(app) => {
     try {
       const sessionData = req.headers['session-data'];
       const headers = getHeaders(sessionData);
+      console.log('Headers @ /api/addtocart', headers);
       const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
         // Test Data
         product_id: 52,

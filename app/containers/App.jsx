@@ -60,10 +60,11 @@ class App extends Component {
   }
   logCookies = async (event) => {
     event.preventDefault();
+    const { sessionKey } = this.state;
     const allCookies = Cookies.get();
     const cookieCartHash = Cookies.get('woocommerce_cart_hash');
     const cookieItemsInCart = Cookies.get('woocommerce_items_in_cart');
-    const cookieWooCommerceSession = Cookies.get('wp_woocommerce_session_25a7ebfcbc60c86dddde55ca50ad8b4f');
+    const cookieWooCommerceSession = Cookies.get(sessionKey);
     console.log({cookieCartHash});
     console.log({cookieItemsInCart});
     console.log({cookieWooCommerceSession});

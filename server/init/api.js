@@ -529,8 +529,9 @@ export default(app) => {
   app.get('/api/getcart', async (req, res) => {
     try {
       const sessionData = req.headers['session-data'];
-      const headers = getHeaders(sessionData);
-      console.log('Headers @ /api/getcart', headers);
+      console.log('sessionData @ /api/addtocart', sessionData);
+      const headers = sessionData ? getHeaders(sessionData) : {};
+      console.log('Headers @ /api/addtocart', headers);
       const response = await axios.get(`${WP_API}/wc/v2/cart`, { headers });
       return res.json(response.data);
     } catch (error) {
@@ -540,7 +541,8 @@ export default(app) => {
   app.get('/api/addtocart', async (req, res) => {
     try {
       const sessionData = req.headers['session-data'];
-      const headers = getHeaders(sessionData);
+      console.log('sessionData @ /api/addtocart', sessionData);
+      const headers = sessionData ? getHeaders(sessionData) : {};
       console.log('Headers @ /api/addtocart', headers);
       const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
         // Test Data

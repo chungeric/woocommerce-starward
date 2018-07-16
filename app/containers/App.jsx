@@ -14,6 +14,18 @@ class App extends Component {
 
   componentDidMount() {
     const { fetchCart } = this.props;
+    const cookies = Cookies.get();
+    const cookieKeys = Object.keys(cookies);
+    let sessionKey = false;
+    for (const key of cookieKeys) {
+      if (key.includes('wp_woocommerce_session_')) sessionKey = key;
+    }
+    if (sessionKey) {
+      const sessionCookie = Cookies.get(sessionKey);
+      console.log('Woocommerce cart session found!', sessionCookie);
+    } else {
+      console.log('Existing cart not found');
+    }
     fetchCart();
   }
   buyMeABeanie = async (event) => {

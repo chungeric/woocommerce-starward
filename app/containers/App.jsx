@@ -11,35 +11,9 @@ import { fetchCart, addToCart } from '../actions/cart';
 import { WP_API } from '../../server/config/app';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    const cookies = Cookies.get();
-    if (cookies) {
-      const cookieKeys = Object.keys(cookies);
-      let sessionKey = false;
-      for (const key of cookieKeys) {
-        if (key.includes('wp_woocommerce_session_')) sessionKey = key;
-      }
-      this.state = {
-        sessionKey
-      };
-    } else {
-      this.state = {
-        sessionKey: false
-      };
-    }
-  }
-
   componentDidMount() {
     const { fetchCart } = this.props;
-    const { sessionKey } = this.state;
-    const sessionCookie = sessionKey ? Cookies.get(sessionKey) : false;
-    if (sessionCookie) {
-      console.log('Woocommerce cart session found!', sessionCookie);
-    } else {
-      console.log('Existing cart not found');
-    }
-    fetchCart(sessionCookie);
+    fetchCart();
   }
   buyMeABeanie = async (event) => {
     event.preventDefault();
@@ -73,16 +47,12 @@ class App extends Component {
   fetchCartHandler = (event) => {
     event.preventDefault();
     const { fetchCart } = this.props;
-    const { sessionKey } = this.state;
-    const sessionCookie = sessionKey ? Cookies.get(sessionKey) : false;
-    fetchCart(sessionCookie);
+    fetchCart();
   }
   addToCartHandler = (event) => {
     event.preventDefault();
     const { addToCart } = this.props;
-    const { sessionKey } = this.state;
-    const sessionCookie = sessionKey ? Cookies.get(sessionKey) : false;
-    addToCart(sessionCookie);
+    addToCart();
   }
   render() {
     const { children, starward, location} = this.props;

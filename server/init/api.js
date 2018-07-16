@@ -524,10 +524,11 @@ export default(app) => {
     try {
       const productId = parseInt(req.query.productId);
       const quantity = parseInt(req.query.quantity);
+      console.log('productId @ /api/addtocart', productId);
+      console.log('quantity @ /api/addtocart', quantity);
       const sessionData = req.headers['session-data'];
       const headers = {};
       if (sessionData) headers.Cookie = sessionData;
-      console.log('Headers @ /api/addtocart', headers);
       const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
         product_id: productId,
         quantity

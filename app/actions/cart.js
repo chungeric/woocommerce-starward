@@ -11,13 +11,13 @@ import {
   ADD_TO_CART_FAILURE
 } from './types';
 
-export const getSessionCookie = () => {
+export const getSessionData = () => {
   const cookies = Cookies.get();
   if (cookies) {
     const cookieKeys = Object.keys(cookies);
     for (const key of cookieKeys) {
       if (key.includes('wp_woocommerce_session_')) {
-        return { [key]: Cookies.get(key) };
+        return `${key}=${Cookies.get(key)};`;
       }
     }
   }
@@ -36,9 +36,9 @@ const fetchCartSuccess = payload => async (dispatch) => {
 
 export const fetchCart = () => async (dispatch) => {
   dispatch({type: GET_CART});
-  const sessionCookie = getSessionCookie();
+  const sessionData = getSessionData();
   const config = {};
-  if (sessionCookie) config['session-data'] = sessionCookie;
+  if (sessionData) config['session-data'] = sessionData;
   try {
     const payload = await axios.get(`${ROOT_API}/getcart`, {
       withCredentials: true,
@@ -62,9 +62,9 @@ const addToSuccess = payload => async (dispatch) => {
 
 export const addToCart = () => async (dispatch) => {
   dispatch({type: ADD_TO_CART});
-  const sessionCookie = getSessionCookie();
+  const sessionData = getSessionData();
   const config = {};
-  if (sessionCookie) config['session-data'] = sessionCookie;
+  if (sessionData) config['session-data'] = sessionData;
   console.log('config', config);
   try {
     const payload = await axios.get(`${ROOT_API}/addtocart`, {

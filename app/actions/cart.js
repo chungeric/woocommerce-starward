@@ -60,14 +60,14 @@ const addToSuccess = payload => async (dispatch) => {
   dispatch({type: ADD_TO_CART_SUCCESS, payload});
 };
 
-export const addToCart = () => async (dispatch) => {
+export const addToCart = (productId, quantity) => async (dispatch) => {
   dispatch({type: ADD_TO_CART});
   const sessionData = getSessionData();
   const config = {};
   if (sessionData) config['session-data'] = sessionData;
   console.log('config', config);
   try {
-    const payload = await axios.get(`${ROOT_API}/addtocart`, {
+    const payload = await axios.get(`${ROOT_API}/addtocart?productId=${productId}&quantity=${quantity}`, {
       withCredentials: true,
       headers: config
     });

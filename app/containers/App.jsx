@@ -15,23 +15,6 @@ class App extends Component {
     const { fetchCart } = this.props;
     fetchCart();
   }
-  buyMeABeanie = async (event) => {
-    event.preventDefault();
-    const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
-      product_id: 44,
-      quantity: 1
-    }, { withCredentials: true });
-    const resCookies = response.headers['set-cookie'];
-    console.log('Added item to cart on the client', response);
-    console.log(`response cookies @ ${WP_API}/wc/v2/cart/add`, resCookies);
-  }
-  viewMyCart = async (event) => {
-    event.preventDefault();
-    const response = await axios.get(`${WP_API}/wc/v2/cart`, { withCredentials: true });
-    const resCookies = response.headers['set-cookie'];
-    console.log('Fetched cart on the client', response);
-    console.log(`response cookies @ ${WP_API}/wc/v2/cart`, resCookies);
-  }
   logCookies = async (event) => {
     event.preventDefault();
     const allCookies = Cookies.get();
@@ -58,10 +41,10 @@ class App extends Component {
     const { fetchCart } = this.props;
     fetchCart();
   }
-  addToCartHandler = (event) => {
+  addToCartHandler = (event, productId, quantity) => {
     event.preventDefault();
     const { addToCart } = this.props;
-    addToCart();
+    addToCart(productId, quantity);
   }
   render() {
     const { children, starward, location} = this.props;
@@ -74,11 +57,11 @@ class App extends Component {
           currentPath={location.pathname}
         />
         <div className="test-buttons">
-          <Link className="test-button" to="#" onClick={(event) => this.addToCartHandler(event)}>Buy me a beanie (Server)</Link>
-          <Link className="test-button" to="#" onClick={(event) => this.fetchCartHandler(event)}>View my cart (Server)</Link>
-          <Link className="test-button" to="#" onClick={(event) => this.buyMeABeanie(event)}>Buy a beanie (Client)</Link>
-          <Link className="test-button" to="#" onClick={(event) => this.viewMyCart(event)}>View my cart (Client)</Link>
-          <Link className="test-button" to="#" onClick={(event) => this.logCookies(event)}>Log Cookies (Client)</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.addToCartHandler(event, 44, 1)}>Buy me a beanie</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.addToCartHandler(event, 50, 1)}>Buy me some sunglasses</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.addToCartHandler(event, 52, 1)}>Buy me a hoodie</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.fetchCartHandler(event)}>View my cart</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.logCookies(event)}>Log Cookies</Link>
         </div>
         {children}
         <Footer siteName={settings.name} />

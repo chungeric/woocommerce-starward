@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { Link } from 'react-router';
 import { Header } from '../components/Common/Header';
 import { Footer } from '../components/Common/Footer';
@@ -32,6 +33,15 @@ class App extends Component {
     console.log('Fetched cart on the client', response);
     console.log(`response cookies @ ${WP_API}/wc/v2/cart`, resCookies);
   }
+  logCookies = async (event) => {
+    event.preventDefault();
+    const cookieCartHash = Cookies.get('woocommerce_cart_hash');
+    const cookieItemsInCart = Cookies.get('woocommerce_items_in_cart');
+    const cookieWooCommerceSession = Cookies.get('wp_woocommerce_session_25a7ebfcbc60c86dddde55ca50ad8b4f');
+    console.log({cookieCartHash});
+    console.log({cookieItemsInCart});
+    console.log({cookieWooCommerceSession});
+  }
   fetchCartHandler = (event) => {
     const { fetchCart } = this.props;
     event.preventDefault();
@@ -57,6 +67,7 @@ class App extends Component {
           <Link className="test-button" to="#" onClick={(event) => this.fetchCartHandler(event)}>View my cart (Server)</Link>
           <Link className="test-button" to="#" onClick={(event) => this.buyMeABeanie(event)}>Buy a beanie (Client)</Link>
           <Link className="test-button" to="#" onClick={(event) => this.viewMyCart(event)}>View my cart (Client)</Link>
+          <Link className="test-button" to="#" onClick={(event) => this.logCookies(event)}>Log Cookies (Client)</Link>
         </div>
         {children}
         <Footer siteName={settings.name} />

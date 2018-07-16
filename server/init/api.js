@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import { appSettings, gravityForms, wp, woocommerce } from '../../graphQL';
-import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX, WP_AUTH, WP_API, COOKIE_DOMAIN } from '../config/app';
+import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX, WP_AUTH, WP_API } from '../config/app';
 import { createRedisClient } from '../redis';
 import { submitForm } from './gravitySubmit';
 
@@ -515,10 +515,10 @@ export default(app) => {
           Cookie: 'woocommerce_cart_hash=49c977c4c9c4fabc0330757a5062f7ff; woocommerce_items_in_cart=1; wp_woocommerce_session_be9883144b2596a8fb509aa96ae7c3d0=44ea087e384ef0c4cc8d92adca84b982%7C%7C1531881628%7C%7C1531878028%7C%7Cdb7e21edb8128b2990c7d367a2146101;'
         }
       });
-      const reqCookies = req.headers['set-cookie'];
+      const reqCookies = req.cookies;
       const resCookies = response.headers['set-cookie'];
-      console.log('Request Cookies @ /api/addtocart', reqCookies);
-      console.log('Response Cookies @ /api/addtocart', resCookies);
+      console.log('Request Cookies @ /api/getcart', reqCookies);
+      console.log('Response Cookies @ /api/getcart', resCookies);
       return res.json(response.data);
     } catch (error) {
       return res.json(error);
@@ -526,6 +526,8 @@ export default(app) => {
   });
   app.get('/api/addtocart', async (req, res) => {
     try {
+      const reqCookies = req.cookies;
+      console.log('Request Cookies @ /api/addtocart', reqCookies);
       const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
         // Test Data
         product_id: 52,

@@ -46,7 +46,12 @@ export const addToCart = () => async (dispatch) => {
   dispatch({type: ADD_TO_CART});
   console.log('Firing addToCart action');
   try {
-    const payload = await axios.get(`${ROOT_API}/addtocart`, { withCredentials: true });
+    const payload = await axios.get(`${ROOT_API}/addtocart`, {
+      withCredentials: true,
+      headers: {
+        Cookie: 'woocommerce_cart_hash=49c977c4c9c4fabc0330757a5062f7ff; woocommerce_items_in_cart=1; wp_woocommerce_session_be9883144b2596a8fb509aa96ae7c3d0=44ea087e384ef0c4cc8d92adca84b982%7C%7C1531881628%7C%7C1531878028%7C%7Cdb7e21edb8128b2990c7d367a2146101;'
+      }
+    });
     dispatch(addToSuccess(payload));
   } catch (error) {
     dispatch(addToCartFailure(error));

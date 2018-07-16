@@ -23,14 +23,14 @@ class App extends Component {
     }, { withCredentials: true });
     const resCookies = response.headers['set-cookie'];
     console.log('Added item to cart on the client', response);
-    console.log(`response @ ${WP_API}/wc/v2/cart/add`, resCookies);
+    console.log(`response cookies @ ${WP_API}/wc/v2/cart/add`, resCookies);
   }
   viewMyCart = async (event) => {
     event.preventDefault();
     const response = await axios.get(`${WP_API}/wc/v2/cart`, { withCredentials: true });
     const resCookies = response.headers['set-cookie'];
     console.log('Fetched cart on the client', response);
-    console.log(`response @ ${WP_API}/wc/v2/cart`, resCookies);
+    console.log(`response cookies @ ${WP_API}/wc/v2/cart`, resCookies);
   }
   fetchCartHandler = (event) => {
     const { fetchCart } = this.props;

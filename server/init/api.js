@@ -528,27 +528,23 @@ export default(app) => {
         product_id: 52,
         quantity: 1
       }, { withCredentials: true });
-      const reqCookies = req.headers['set-cookie'];
-      const resCookies = response.headers['set-cookie'];
-      console.log('Request Cookies @ /api/addtocart', reqCookies);
-      console.log('Response Cookies @ /api/addtocart', resCookies);
-      // const setCookieFunc = (cookie) => {
-      //   const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
-      //   const cookieKey = cookieKeyValue.split('=')[0];
-      //   const cookieValue = decodeURIComponent(cookieKeyValue.split('=')[1]);
-      //   const cookieOptions = { };
-      //   cookieOptionsArr.forEach(option => (cookieOptions[option.split('=')[0]] = option.split('=')[1]));
-      //   if (cookieOptions.expires) {
-      //     const expires = new Date(cookieOptions.expires);
-      //     cookieOptions.expires = expires;
-      //   }
-      //   if (COOKIE_DOMAIN !== 'localhost') cookieOptions.domain = COOKIE_DOMAIN;
-      //   res.cookie(cookieKey, cookieValue, cookieOptions);
-      //   console.log({cookieKey});
-      //   console.log({cookieValue});
-      //   console.log({cookieOptions});
-      // };
-      // cookies.map(cookie => setCookieFunc(cookie));
+      const cookies = response.headers['set-cookie'];
+      const setCookieFunc = (cookie) => {
+        const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
+        const cookieKey = cookieKeyValue.split('=')[0];
+        const cookieValue = decodeURIComponent(cookieKeyValue.split('=')[1]);
+        const cookieOptions = { };
+        cookieOptionsArr.forEach(option => (cookieOptions[option.split('=')[0]] = option.split('=')[1]));
+        if (cookieOptions.expires) {
+          const expires = new Date(cookieOptions.expires);
+          cookieOptions.expires = expires;
+        }
+        res.cookie(cookieKey, cookieValue, cookieOptions);
+        console.log({cookieKey});
+        console.log({cookieValue});
+        console.log({cookieOptions});
+      };
+      cookies.map(cookie => setCookieFunc(cookie));
       return res.json(response.data);
     } catch (error) {
       // Handle error

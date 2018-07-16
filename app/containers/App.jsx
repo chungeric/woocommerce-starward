@@ -35,12 +35,14 @@ class App extends Component {
   }
   logCookies = async (event) => {
     event.preventDefault();
+    const allCookies = Cookies.get();
     const cookieCartHash = Cookies.get('woocommerce_cart_hash');
     const cookieItemsInCart = Cookies.get('woocommerce_items_in_cart');
     const cookieWooCommerceSession = Cookies.get('wp_woocommerce_session_25a7ebfcbc60c86dddde55ca50ad8b4f');
     console.log({cookieCartHash});
     console.log({cookieItemsInCart});
     console.log({cookieWooCommerceSession});
+    console.log({allCookies});
   }
   fetchCartHandler = (event) => {
     const { fetchCart } = this.props;

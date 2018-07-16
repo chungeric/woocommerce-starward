@@ -511,7 +511,10 @@ export default(app) => {
   app.get('/api/getcart', async (req, res) => {
     try {
       const response = await axios.get(`${WP_API}/wc/v2/cart`);
-      console.log('Response received!', response.data);
+      const reqCookies = req.headers['set-cookie'];
+      const resCookies = response.headers['set-cookie'];
+      console.log('Request Cookies @ /api/addtocart', reqCookies);
+      console.log('Response Cookies @ /api/addtocart', resCookies);
       return res.json(response.data);
     } catch (error) {
       return res.json(error);
@@ -525,7 +528,10 @@ export default(app) => {
         product_id: 52,
         quantity: 1
       }, { withCredentials: true });
-      // const cookies = response.headers['set-cookie'];
+      const reqCookies = req.headers['set-cookie'];
+      const resCookies = response.headers['set-cookie'];
+      console.log('Request Cookies @ /api/addtocart', reqCookies);
+      console.log('Response Cookies @ /api/addtocart', resCookies);
       // const setCookieFunc = (cookie) => {
       //   const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
       //   const cookieKey = cookieKeyValue.split('=')[0];

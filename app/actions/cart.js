@@ -28,7 +28,10 @@ export const fetchCart = (sessionCookie) => async (dispatch) => {
   if (sessionCookie) config['session-data'] = sessionCookie;
   console.log('Headers @ fetchCart', config);
   try {
-    const payload = await axios.get(`${ROOT_API}/getcart`, { withCredentials: true, ...config });
+    const payload = await axios.get(`${ROOT_API}/getcart`, {
+      withCredentials: true,
+      headers: config
+    });
     dispatch(fetchCartSuccess(payload));
   } catch (error) {
     dispatch(fetchCartFailure(error));
@@ -50,11 +53,12 @@ export const addToCart = (sessionCookie) => async (dispatch) => {
   console.log('Firing addToCart action');
   const config = {};
   if (sessionCookie) config['session-data'] = sessionCookie;
+  console.log('config', config);
   try {
     const payload = await axios.get(`${ROOT_API}/addtocart`, {
       withCredentials: true,
-      ...config
-    }, { headers: config });
+      headers: config
+    });
     dispatch(addToSuccess(payload));
   } catch (error) {
     dispatch(addToCartFailure(error));

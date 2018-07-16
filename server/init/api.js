@@ -510,7 +510,11 @@ export default(app) => {
 
   app.get('/api/getcart', async (req, res) => {
     try {
-      const response = await axios.get(`${WP_API}/wc/v2/cart`);
+      const response = await axios.get(`${WP_API}/wc/v2/cart`, {
+        headers: {
+          Cookie: 'woocommerce_cart_hash=49c977c4c9c4fabc0330757a5062f7ff; woocommerce_items_in_cart=1; wp_woocommerce_session_be9883144b2596a8fb509aa96ae7c3d0=44ea087e384ef0c4cc8d92adca84b982%7C%7C1531881628%7C%7C1531878028%7C%7Cdb7e21edb8128b2990c7d367a2146101;'
+        }
+      });
       const reqCookies = req.headers['set-cookie'];
       const resCookies = response.headers['set-cookie'];
       console.log('Request Cookies @ /api/addtocart', reqCookies);
@@ -522,17 +526,13 @@ export default(app) => {
   });
   app.get('/api/addtocart', async (req, res) => {
     try {
-      console.log(`Hitting: ${WP_API}/wc/v2/cart/add`);
-      console.log('`${WP_API}/wc/v2/cart/add`', `${WP_API}/wc/v2/cart/add`);
       const response = await axios.post(`${WP_API}/wc/v2/cart/add`, {
         // Test Data
         product_id: 52,
         quantity: 1
       }, { withCredentials: true });
       const cookies = response.headers['set-cookie'];
-      console.log(`Cookies from: ${WP_API}/wc/v2/cart/add`, cookies);
       const setCookieFunc = (cookie) => {
-        console.log('Running set cookie function');
         const [cookieKeyValue, ...cookieOptionsArr] = cookie.split('; ');
         const cookieKey = cookieKeyValue.split('=')[0];
         const cookieValue = decodeURIComponent(cookieKeyValue.split('=')[1]);

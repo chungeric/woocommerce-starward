@@ -513,7 +513,6 @@ export default(app) => {
       const sessionData = req.headers['session-data'];
       const headers = {};
       if (sessionData) headers.Cookie = sessionData;
-      console.log('Headers @ /api/addtocart', headers);
       const response = await axios.get(`${WP_API}/wc/v2/cart`, { headers });
       return res.json(response.data);
     } catch (error) {
@@ -524,8 +523,6 @@ export default(app) => {
     try {
       const productId = parseInt(req.query.productId);
       const quantity = parseInt(req.query.quantity);
-      console.log('productId @ /api/addtocart', productId);
-      console.log('quantity @ /api/addtocart', quantity);
       const sessionData = req.headers['session-data'];
       const headers = {};
       if (sessionData) headers.Cookie = sessionData;
@@ -544,6 +541,13 @@ export default(app) => {
           if (cookieOptions.expires) {
             const expires = new Date(cookieOptions.expires);
             cookieOptions.expires = expires;
+          }
+          if (cookieOptions.expires) {
+            const expires = new Date(cookieOptions.expires);
+            cookieOptions.expires = expires;
+          }
+          if (cookieOptions.path) {
+            cookieOptions.path = '/';
           }
           res.cookie(cookieKey, cookieValue, cookieOptions);
         };

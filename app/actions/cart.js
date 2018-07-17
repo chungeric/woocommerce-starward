@@ -65,7 +65,6 @@ export const addToCart = (productId, quantity) => async (dispatch) => {
   const sessionData = getSessionData();
   const config = {};
   if (sessionData) config['session-data'] = sessionData;
-  console.log('config', config);
   try {
     const payload = await axios.get(`${ROOT_API}/addtocart?productId=${productId}&quantity=${quantity}`, {
       withCredentials: true,

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router';
 import { Header } from '../components/Common/Header';
 import { Footer } from '../components/Common/Footer';
 import { TrackingScript } from '../components/Common/TrackingScript';
 import { fetchCart, addToCart } from '../actions/cart';
-
-import { WP_API } from '../../server/config/app';
 
 class App extends Component {
   componentDidMount() {

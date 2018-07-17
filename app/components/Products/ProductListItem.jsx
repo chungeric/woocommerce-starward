@@ -24,12 +24,33 @@ export const ProductListItem = props => {
         <h3>{name}</h3>
         <div dangerouslySetInnerHTML={{ __html: price_html }} />
         { attributes.map(attribute => {
+          // Check if the attribute has swatches
+          if (attribute.swatches) {
+            return (
+              <ul className="attribute-options" key={attribute.name}>
+                { attribute.options.map((option, i) => {
+                  return (
+                    <li
+                      key={i}
+                      style={{
+                        backgroundColor: attribute.swatches[option],
+                        width: '20px',
+                        height: '20px',
+                        display: 'inline-block'
+                      }}
+                    />
+                  );
+                })}
+              </ul>
+            );
+          }
+          // Default
           return (
-            <div key={attribute.name}>
+            <ul className="attribute-options" key={attribute.name}>
               { attribute.options.map((option, i) => {
-                return <span key={i}>{option} </span>;
+                return <li key={i}>{option}</li>;
               })}
-            </div>
+            </ul>
           );
         })}
       </Link>

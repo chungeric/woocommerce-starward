@@ -333,7 +333,8 @@ export default(app) => {
                 id,
                 name,
                 slug,
-                options
+                options,
+                swatches
               }
             },
             totalProducts,
@@ -491,7 +492,8 @@ export default(app) => {
             slug,
             position,
             visible,
-            options
+            options,
+            swatches
           },
           in_stock,
           stock_quantity,
@@ -508,6 +510,7 @@ export default(app) => {
             name,
             regular_price,
             sale_price,
+            price,
             slug
           }
         }

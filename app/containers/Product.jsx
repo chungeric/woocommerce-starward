@@ -68,14 +68,39 @@ class Product extends Component {
           )}
         </div>
         { attributes.map(attribute => {
+          // Check if the attribute has swatches
+          if (attribute.swatches) {
+            return (
+              <ul className="attribute-options" key={attribute.name}>
+                <h3>{attribute.name}</h3>
+                { attribute.options.map((option, i) => {
+                  return (
+                    <li
+                      key={i}
+                      style={{
+                        backgroundColor: attribute.swatches[option],
+                        width: '20px',
+                        height: '20px',
+                        display: 'inline-block'
+                      }}
+                    />
+                  );
+                })}
+              </ul>
+            );
+          }
           return (
-            <div key={attribute.name}>
-              { attribute.options.map((option, i) => {
-                return <span key={i}>{option} </span>;
-              })}
+            <div className="attribute-options" key={attribute.name}>
+              <h3>{attribute.name}</h3>
+              <select>
+                { attribute.options.map((option, i) => {
+                  return <option key={i}>{option}</option>;
+                })}
+              </select>
             </div>
           );
         })}
+        <button className="add-to-cart">Add to cart</button>
         <div className="description">
           <h2>Product Description</h2>
           <p dangerouslySetInnerHTML={{__html: description}} />
@@ -89,6 +114,7 @@ class Product extends Component {
               name,
               regular_price: relatedProductRegularPrice,
               sale_price: relatedProductSalePrice,
+              price,
               slug,
             } = relatedProduct;
             const relatedProductBaseImage = (images && images.length > 0) ? images[0] : null;
@@ -96,16 +122,7 @@ class Product extends Component {
               <Link to={`/${STORE_PRODUCTS_SLUG}/${slug}`} className="related-product" key={id}>
                 { relatedProductBaseImage && <img src={`${WP_URL}${relatedProductBaseImage.src}`} alt={relatedProductBaseImage.alt} />}
                 <h3 key={id}>{name}</h3>
-                { relatedProductSalePrice ? (
-                  <div className="price">
-                    <p className="regular-price">Was {relatedProductRegularPrice}</p>
-                    <p className="sale-price">Now {relatedProductSalePrice}</p>
-                  </div>
-                ) : (
-                  <div className="price">
-                    <p className="regular-price">{relatedProductRegularPrice}</p>
-                  </div>
-                )}
+                <div className="price">{price}</div>
               </Link>
             );
           })}

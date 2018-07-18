@@ -19,16 +19,18 @@ class PriceSlider extends Component {
 
   render() {
     const { filter, index, location } = this.props;
-    const { min_price: minPrice, max_price: maxPrice } = filter;
-    const hasNewPrices = ('min_price' in location.query) || ('max_price' in location.query);
-    const newMinPrice = hasNewPrices ? parseInt(location.query.min_price) : null;
-    const newMaxPrice = hasNewPrices ? parseInt(location.query.max_price) : null;
+    const { min_price, max_price } = filter;
+    const minPrice = parseInt(min_price);
+    const maxPrice = parseInt(max_price);
+    const hasPricesInQueryParams = ('min_price' in location.query) || ('max_price' in location.query);
+    const queryMinPrice = hasPricesInQueryParams ? parseInt(location.query.min_price) : null;
+    const queryMaxPrice = hasPricesInQueryParams ? parseInt(location.query.max_price) : null;
     if (filter && minPrice !== maxPrice) {
       return (
         <section className="filter-block" key={index}>
           <h3>Price</h3>
           <ReactSlider
-            defaultValue={hasNewPrices ? [newMinPrice, newMaxPrice] : [minPrice, maxPrice]}
+            defaultValue={hasPricesInQueryParams ? [queryMinPrice, queryMaxPrice] : [minPrice, maxPrice]}
             min={minPrice}
             max={maxPrice}
             className="price-slider"

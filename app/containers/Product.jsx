@@ -78,7 +78,7 @@ class Product extends Component {
                     <li
                       key={i}
                       style={{
-                        backgroundColor: attribute.swatches[option],
+                        backgroundColor: attribute.swatches[option.name],
                         width: '20px',
                         height: '20px',
                         display: 'inline-block'
@@ -94,7 +94,7 @@ class Product extends Component {
               <h3>{attribute.name}</h3>
               <select>
                 { attribute.options.map((option, i) => {
-                  return <option key={i}>{option}</option>;
+                  return <option key={i}>{option.name}</option>;
                 })}
               </select>
             </div>

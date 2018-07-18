@@ -33,7 +33,7 @@ export const ProductListItem = props => {
                     <li
                       key={i}
                       style={{
-                        backgroundColor: attribute.swatches[option],
+                        backgroundColor: attribute.swatches[option.name],
                         width: '20px',
                         height: '20px',
                         display: 'inline-block'
@@ -48,7 +48,7 @@ export const ProductListItem = props => {
           return (
             <ul className="attribute-options" key={attribute.name}>
               { attribute.options.map((option, i) => {
-                return <li key={i}>{option}</li>;
+                return <li key={i}>{option.name}</li>;
               })}
             </ul>
           );

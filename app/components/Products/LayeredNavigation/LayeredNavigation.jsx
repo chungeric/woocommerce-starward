@@ -48,29 +48,31 @@ const getQueryString = (queryObj, newKey, newValue) => {
 };
 
 function AttributeFilter({attribute, urlBase, location}) {
-  // console.log(location);
-  return (
-    <section className="filter-block">
-      <h3>{attribute.name}</h3>
-      <ul>
-        { attribute.options &&
-          attribute.options.map((option, i) => {
-            // Clone location query object so that we use the original location.query
-            // for each attribute option
-            const queryObj = location && Object.assign({}, location.query);
-            const queryString = getQueryString(queryObj, attribute.slug, option.id);
-            // const isActive =
-            //   (queryObj.hasOwnProperty(attribute.slug));
-            // console.log(isActive);
-            return (
-              <li key={i}>
-                <Link to={`/${urlBase}${queryString}`}>{option.name}</Link>
-              </li>
-            );
-        })}
-      </ul>
-    </section>
-  );
+  if (attribute.options) {
+    return (
+      <section className="filter-block">
+        <h3>{attribute.label}</h3>
+        <ul>
+          { attribute.options &&
+            attribute.options.map((option, i) => {
+              // Clone location query object so that we use the original location.query
+              // for each attribute option
+              const queryObj = location && Object.assign({}, location.query);
+              const queryString = getQueryString(queryObj, attribute.slug, option.term_id);
+              // const isActive =
+              //   (queryObj.hasOwnProperty(attribute.slug));
+              // console.log(isActive);
+              return (
+                <li key={i}>
+                  <Link to={`/${urlBase}${queryString}`}>{option.name}</Link>
+                </li>
+              );
+          })}
+        </ul>
+      </section>
+    );
+  }
+  return null;
 }
 
 function SubCategoriesFilter({subcategories, urlBase, location}) {
@@ -83,7 +85,7 @@ function SubCategoriesFilter({subcategories, urlBase, location}) {
             // Clone location query object so that we use the original location.query
             // for each attribute option
             const queryObj = location && Object.assign({}, location.query);
-            const queryString = getQueryString(queryObj, 'category', subcategory.id);
+            const queryString = getQueryString(queryObj, 'category', subcategory.term_id);
             return (
               <li key={i}>
                 <Link to={`/${urlBase}${queryString}`}>{subcategory.name}</Link>
@@ -150,8 +152,13 @@ const RenderFilterBlocks = ({filters, urlBase, location}) => {
 
 export const LayeredNavigation = props => {
   const { filters, urlBase, location } = props;
-  const categoryHasFilters = Object.keys(filters).length > 0;
-  if (categoryHasFilters) {
+  const { attributes, subcategories, price } = filters;
+  const hasAttributeFilters = attributes.some(attribute => {
+    return attribute.options != null;
+  });
+  const hasSubCategories = typeof subcategories !== 'undefined' && subcategories.length > 0;
+  const hasPriceRange = price.min_price !== price.max_price;
+  if (hasAttributeFilters || hasPriceRange || hasSubCategories) {
     return (
       <div className="layered-navigation">
         <h2>Layered Navigation</h2>

@@ -333,7 +333,14 @@ export default(app) => {
                 id,
                 name,
                 slug,
-                options,
+                options {
+                  id,
+                  name,
+                  slug,
+                  taxonomy,
+                  description,
+                  count
+                },
                 swatches
               }
             },
@@ -353,113 +360,13 @@ export default(app) => {
 
   /* Get WooCommerce Attributes Specific to a Product Category */
   app.get('/api/categoryfilters', async (req, res) => {
-    const WC_API_ROOT = `${WP_API}/wc/v2`;
-    const wcProductsUrl = `${WC_API_ROOT}/products`;
     const auth = { Authorization: `Basic ${WP_AUTH}` };
-    const toArray = (obj) => Object.keys(obj).map(key => obj[key]);
     try {
       const { categoryId } = req.query;
-
-      // Get all product data for current category
-      const productsResponse = await axios.get(`${wcProductsUrl}?category=${categoryId}`, { headers: auth });
-      // Get an array of attributes from each product
-      const attributesArray = productsResponse.data.map((product) => {
-        return product.attributes;
-      });
-      // Get an array of subcategories
-      const subCategoriesArray = await axios.get(`${wcProductsUrl}/categories?parent=${categoryId}`, { headers: auth });
-      // Get array of product prices
-      const pricesArray = productsResponse.data.map((product) => {
-        return product.price;
-      });
-      // Get max and min price for the category to use in price range slider
-      const maxPrice = Math.max(...pricesArray);
-      const minPrice = Math.min(...pricesArray);
-
-      // Merge product attribute arrays into 1 array
-      const attributesArrayMerged = [].concat.apply([], attributesArray);
-
-      console.log('setting up category filters object');
-
-      const subCategoriesObj = subCategoriesArray.data.map((subcategory) => {
-        return ({
-          id: subcategory.id,
-          name: subcategory.name,
-          slug: subcategory.slug
-        });
-      });
-
-      const attributesObj = {};
-      // Add only unique attributes to attributesObject
-      attributesArrayMerged.forEach((attribute) => {
-        if (!(attribute in attributesObj)) {
-          attributesObj[attribute.name] = {
-            id: attribute.id,
-            name: attribute.name,
-            slug: null,
-            options: []
-          };
-        }
-      });
-
-      // Push available options into attributesObj
-      attributesArrayMerged.forEach(attribute => {
-        // Push unique options into attributes object
-        attribute.options.forEach((option) => {
-          if (attributesObj[attribute.name].options.indexOf(option) === -1) {
-            attributesObj[attribute.name].options.push(option);
-          }
-        });
-      });
-
-      // Get each unique attribute's slug and available option details
-      await Promise.all(toArray(attributesObj).map(async (attribute) => {
-        // Make requests to get attribute slugs
-        const attributeData = await axios.get(`${wcProductsUrl}/attributes/${attribute.id}`, { headers: auth });
-        attributesObj[attribute.name].slug = attributeData.data.slug;
-        // Make request to get attibute options with ids
-        const optionData = await axios.get(`${wcProductsUrl}/attributes/${attribute.id}/terms`, { headers: auth });
-        const optionDetails = optionData.data;
-        // Get existing array containing option names only
-        const optionNames = attributesObj[attribute.name].options;
-        // Map over option names and find obj withing optionData response
-        const options = optionNames.map(optionName => {
-          const option = optionDetails.find(item => item.name === optionName);
-          const { id, name, slug } = option;
-          return ({
-            id,
-            name,
-            slug
-          });
-        });
-        // Replace basic option info with detailed response from API
-        attributesObj[attribute.name].options = options;
-      }));
-
-      /* Set up filtersObject response */
-      const filtersObject = {};
-
-      /* Populate filtersObject response */
-      const isEmpty = (container) => {
-        return Object.getOwnPropertyNames(container).length === 0 || container.length === 0;
-      };
-
-      if (maxPrice !== minPrice) {
-        const priceObj = {
-          min_price: minPrice,
-          max_price: maxPrice
-        };
-        filtersObject.price = priceObj;
-      }
-      if (!isEmpty(attributesObj)) {
-        filtersObject.attributes = attributesObj;
-      }
-      if (!isEmpty(subCategoriesObj)) {
-        filtersObject.subcategories = subCategoriesObj;
-      }
-
+      // Make request to custom endpoint in Starward WooCommerce Plugin
+      const filtersObject = await axios.get(`${WP_API}/starward/products/filters/category/${categoryId}`, { headers: auth });
       // Respond with category filters object
-      return res.json(sanitizeJSON(filtersObject));
+      return res.json(sanitizeJSON(filtersObject.data));
     } catch (error) {
       // Handle error
       return res.json(error);
@@ -492,7 +399,14 @@ export default(app) => {
             slug,
             position,
             visible,
-            options,
+            options {
+              id,
+              name,
+              slug,
+              taxonomy,
+              description,
+              count
+            }
             swatches
           },
           in_stock,

@@ -61,8 +61,16 @@ const wooCommerceSchema = `
     slug: String,
     position: Int,
     visible: Boolean,
-    options: [String],
+    options: [Option],
     swatches: JSON
+  }
+  type Option {
+    id: Int,
+    name: String,
+    slug: String,
+    taxonomy: String,
+    description: String,
+    count: Int
   }
   type Query {
     productcategory (slug: String, page: Int, queryString: String): Category

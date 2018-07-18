@@ -46,7 +46,7 @@ class Product extends Component {
         { images.length > 1 &&
           images.map(image => {
             return (
-              <img src={`${WP_URL}${image.src}`} alt={image.alt} />
+              <img src={`${WP_URL}${image.src}`} alt={image.alt} key={image.position} />
             );
           })
         }

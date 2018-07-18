@@ -37,7 +37,6 @@ const wooCommerceQueries = {
       // Get Product Attributes for Current Category
       return axios.get(`${ROOT_API}/categoryfilters?categoryId=${categoryId}`)
       .then(categoryFilters => {
-        // console.log(categoryFilters.data);
         return categoryFilters.data;
       })
       .catch(error => console.log('error', error));

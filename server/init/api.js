@@ -426,7 +426,8 @@ export default(app) => {
             sale_price,
             price,
             slug
-          }
+          },
+          variations
         }
       }`, { slug: req.query.slug })
       .then(handleSuccess(res))

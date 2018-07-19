@@ -1,0 +1,44 @@
+.attribute-options {
+  .swatch-options {
+    .swatch-option-container {
+      display: inline-block;
+      position: relative;
+      width: 30px;
+      height: 30px;
+      margin: 10px;
+      cursor: pointer;
+      font-size: 22px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &:hover input ~ .mark {
+
+      }
+
+      input:checked ~ .mark {
+        border: 2px solid black;
+      }
+
+      input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .mark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        border: 2px solid lightgrey;
+        transition: outline-offset 0.2s;
+      }
+    }
+  }
+}

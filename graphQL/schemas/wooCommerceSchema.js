@@ -40,6 +40,7 @@ const wooCommerceSchema = `
     featured: Boolean,
     catalog_visibility: String,
     relatedProducts: [Product],
+    variations: JSON,
     parent: Int,
     count: Int
   }

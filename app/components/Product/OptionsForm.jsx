@@ -3,7 +3,7 @@ import React from 'react';
 export function OptionsForm({ attributes, productType, callback }) {
   if (productType === 'variable') {
     return (
-      <form>
+      <form method="GET">
         { attributes.map(attribute => {
           // Check if the attribute has color swatches
           // Use radio buttons instead
@@ -21,7 +21,7 @@ export function OptionsForm({ attributes, productType, callback }) {
                         <input
                           type="radio"
                           id={`radio-${i}`}
-                          name="swatch-option"
+                          name={option.taxonomy}
                           value={option.slug}
                           style={{
                             position: 'absolute',
@@ -47,9 +47,19 @@ export function OptionsForm({ attributes, productType, callback }) {
           return (
             <div className="attribute-options" key={attribute.name}>
               <h3>{attribute.name}</h3>
-              <select>
+              <select
+                name={attribute.taxonomy}
+                onChange={callback}>
+                <option value="">Select a {attribute.slug}</option>
                 { attribute.options.map((option, i) => {
-                  return <option key={i}>{option.name}</option>;
+                  return (
+                    <option
+                      name={option.taxonomy}
+                      value={option.slug}
+                      key={i}>
+                      {option.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>

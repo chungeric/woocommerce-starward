@@ -60,6 +60,7 @@ const wooCommerceSchema = `
     id: Int,
     name: String,
     slug: String,
+    taxonomy: String,
     position: Int,
     visible: Boolean,
     options: [Option],

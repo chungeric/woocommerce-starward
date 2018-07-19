@@ -25,8 +25,11 @@ class Product extends Component {
   }
 
   optionSelectionHandler = (e) => {
+    const optionName = e.target.name;
     const optionValue = e.target.value;
-    console.log(optionValue);
+    const selectedOptions = this.state.selectedOptions;
+    selectedOptions[optionName] = optionValue;
+    this.setState({ selectedOptions });
   }
 
   render() {

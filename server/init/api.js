@@ -397,6 +397,7 @@ export default(app) => {
             id,
             name,
             slug,
+            taxonomy,
             position,
             visible,
             options {

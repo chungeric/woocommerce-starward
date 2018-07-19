@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function OptionsForm({ attributes, productType }) {
+export function OptionsForm({ attributes, productType, callback }) {
   if (productType === 'variable') {
     return (
       <form>
@@ -28,6 +28,7 @@ export function OptionsForm({ attributes, productType }) {
                             opacity: 0,
                             cursor: 'pointer'
                           }}
+                          onClick={callback}
                         />
                         <span
                           className="mark"

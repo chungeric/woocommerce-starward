@@ -17,6 +17,18 @@ import { RelatedProducts } from '../components/Product/RelatedProducts';
 import { Tabs } from '../components/Product/Tabs';
 
 class Product extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedOptions: {}
+    };
+  }
+
+  optionSelectionHandler = (e) => {
+    const optionValue = e.target.value;
+    console.log(optionValue);
+  }
+
   render() {
     const { product, loading, settings, params, location } = this.props;
     if (loading) return <Loading />;
@@ -33,29 +45,39 @@ class Product extends Component {
       price,
       regular_price: regularPrice,
       sale_price: salePrice,
-      price_html: priceHtml,
+      // price_html: priceHtml,
       attributes,
       in_stock: inStock,
       stock_quantity: stockQuantity,
       type,
-      catalog_visibility: catalogVisibility,
-      relatedProducts
+      // catalog_visibility: catalogVisibility,
+      relatedProducts,
+      variations
     } = product;
     const baseImage = images.length > 0 ? images[0] : null;
+
     return (
       <main className="content" role="main">
         <Head defaultTitle={`${name} - ${settings.name}`} />
-        <Gallery baseImage={baseImage} images={images} />
+        <Gallery
+          baseImage={baseImage}
+          images={images}
+          selectedOptions={this.state.selectedOptions}
+          variations={variations} />
         <Title title={name} />
-        <p className="sku" dangerouslySetInnerHTML={{__html: sku}} />
+        <p
+          className="sku"
+          dangerouslySetInnerHTML={{__html: sku}} />
         <ShortDescription text={shortDescription} />
         <Price
           price={price}
           regularPrice={regularPrice}
           salePrice={salePrice}
+          productType={type} />
+        <OptionsForm
+          attributes={attributes}
           productType={type}
-        />
-        <OptionsForm attributes={attributes} productType={type} />
+          callback={this.optionSelectionHandler} />
         <Tabs description={description} />
         <RelatedProducts relatedProducts={relatedProducts} />
       </main>

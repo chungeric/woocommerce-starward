@@ -41,6 +41,7 @@ const wooCommerceSchema = `
     catalog_visibility: String,
     relatedProducts: [Product],
     variations: JSON,
+    variation_attributes: JSON,
     parent: Int,
     count: Int
   }

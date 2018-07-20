@@ -55,7 +55,8 @@ class Product extends Component {
       type,
       // catalog_visibility: catalogVisibility,
       relatedProducts,
-      variations
+      variations,
+      variation_attributes: variationAttributes
     } = product;
     const baseImage = images.length > 0 ? images[0] : null;
 
@@ -79,6 +80,7 @@ class Product extends Component {
           productType={type} />
         <OptionsForm
           attributes={attributes}
+          variationAttributes={variationAttributes}
           productType={type}
           callback={this.optionSelectionHandler} />
         <Tabs description={description} />

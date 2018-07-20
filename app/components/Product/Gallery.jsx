@@ -1,8 +1,9 @@
 import React from 'react';
 import { WP_URL } from '../../../server/config/app';
 
-export function Gallery({baseImage, images, selectedOptions}) {
-  console.log(selectedOptions);
+export function Gallery({baseImage, images, variations, selectedOptions}) {
+  // console.log(variations);
+  // console.log(selectedOptions);
   return (
     <div className="gallery">
       { baseImage &&

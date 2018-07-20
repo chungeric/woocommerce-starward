@@ -1,8 +1,6 @@
 import React from 'react';
 
 export function OptionsForm({ attributes, variationAttributes, productType, callback }) {
-  console.log({attributes});
-  console.log({variationAttributes});
   if (productType === 'variable') {
     return (
       <form method="GET">
@@ -19,7 +17,7 @@ export function OptionsForm({ attributes, variationAttributes, productType, call
                   <div className="swatch-options">
                     { attribute.options.map((option, i) => {
                       // Check if the current option is one of the variation options
-                      if (variationAttributes[attribute.taxonomy].includes(option.slug)) {
+                      if (variationAttributes[attribute.taxonomy].indexOf(option.slug) !== -1) {
                         return (
                           <label
                             className="swatch-option-container"
@@ -63,7 +61,7 @@ export function OptionsForm({ attributes, variationAttributes, productType, call
                   <option value="">Select a {attribute.slug}</option>
                   { attribute.options.map((option, i) => {
                     // Check if the current option is one of the variation options
-                    if (variationAttributes[attribute.taxonomy].includes(option.slug)) {
+                    if (variationAttributes[attribute.taxonomy].indexOf(option.slug) !== -1) {
                       return (
                         <option
                           name={option.taxonomy}

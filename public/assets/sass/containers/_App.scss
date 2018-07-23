@@ -1,3 +1,25 @@
 /*=============================================>>>>>
 = App Styles =
 ===============================================>>>>>*/
+
+.test-buttons {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 20px;
+  align-items: flex-start;
+
+  .test-button {
+    display: inline-block;
+    color: $white;
+    background-color: $black;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: lighten($black, 20%);
+      text-decoration: none;
+    }
+  }
+}
